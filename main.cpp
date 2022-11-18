@@ -63,40 +63,35 @@ class Player *searchPlayerByNick(const string & nick)
     return cur_player;
 }
 
-bool getValue(int input)
+// getValueInt(12, 0, 15)
+// getValueInt(12, 15, 0)
+int getValueInt(int diapasonPoint1, int diapasonPoint2)
 {
+    int input;
+
     while (true)
     {
+        cin >> input;
+
         if (cin.fail())
         {
             cin.clear();
             cin.ignore();
             cout << "Wrong input! Try again" << endl;
-            break;
+            continue;
         }  
         else 
         {
-            cin.ignore(32767, '\n');
-            return input;
-        }
-    }
-
-    return 0;
-}
-
-bool getCheck(int input, int diapasonPoint1, int diapasonPoint2)
-{
-    while (true)
-    {
-        if (input >= diapasonPoint1 && input <= diapasonPoint2)
-        {
-            cin.ignore(32767, '\n');
-            return input;
-        }
-        else 
-        {
-            cout << "Wrong input! Try again" << endl;
-            break;
+            if (diapasonPoint1 < diapasonPoint2 && input >= diapasonPoint1 && input <= diapasonPoint2)  
+            {
+                cin.ignore(32767, '\n');
+                return input;
+            }
+            else 
+            {
+                cout << "Wrong input! Try again" << endl;
+                continue;
+            }
         }
     }
 
@@ -161,20 +156,15 @@ int main()
     while (run)
     {
         cout << "Choose one of Menu item: " << endl;
-        cin >> user_input;
-        getValue(user_input);
-        getCheck(user_input, CN_MenuWorld_E, CN_MenuExit_E);   
+        user_input = getValueInt(CN_MenuWorld_E, CN_MenuExit_E);   
 
-        if (user_input >= CN_MenuWorld_E && user_input <= CN_MenuExit_E)
-        {
             switch (user_input)
             {
                 // World
                 case CN_MenuWorld_E:
                     cout << "Menu->World: 1 - Create, 2 - Delete, 3 - PrintAllWorlds, 4 - ShowStatus,"
                             " 5 - AddPlayer, 6 - DeletePlayer, 7 - Exit" << endl;
-                    cin >> user_input;
-                    getValue(user_input);
+                    getValueInt(user_input);
                     if (user_input >= CW_MenuWorldCreate_E && user_input <= CW_MenuWorldExit_E) 
                     {
                         switch (user_input)
@@ -337,7 +327,7 @@ int main()
                 case CN_MenuPlayer_E:
                     cout << "Menu->Player: 1 - Create, 2 - Delete, 3 - PrintAllPlayers, 4 - ShowStatus, 5 - Exit" << endl;
                     cin >> user_input;
-                    getValue(user_input);
+                    getValueInt(user_input);
                     if (user_input >= CP_MenuPlayerCreate_E && user_input <= CP_MenuPlayerExit_E)
                         {
                             switch (user_input)
@@ -436,11 +426,6 @@ int main()
                     run = false;
                     break;
             }
-        }
-        else
-        {
-            cout << "Wrong the menu item: " << user_input << endl;
-        }
     }
 
     return 0;
