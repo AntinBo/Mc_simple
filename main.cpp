@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string.h>
+#include <fstream>
 #include <list>
 
 //#include "skin.h"
@@ -21,6 +22,7 @@ class Player
 */
 /***********************************************************/
 
+// Change "world" to "list_worlds"
 // Global variables
 std::list<class World*> world;
 std::list<class Player*> list_players;
@@ -108,13 +110,16 @@ int main()
     string nick;
     int color;
     int width;
-    const char *menu = "Menu: 1 - World, 2 - Player, 3 - Help, 4 - Exit";
+    const char *menu = "Menu: 1 - World, 2 - Player, 3 - Load, 4 - Save, 5 - Help, 6 - Exit";
+    string file_name = "Minecraft-01.bin";
     int n;
 
     enum CommandMain
     {
         CN_MenuWorld_E = 1,
         CN_MenuPlayer_E,
+        CN_MenuLoad_E,
+        CN_MenuSave_E,
         CN_MenuHelp_E,
         CN_MenuExit_E
     };
@@ -161,6 +166,7 @@ int main()
             {
                 // World
                 case CN_MenuWorld_E:
+                {
                     cout << "Menu->World: 1 - Create, 2 - Delete, 3 - PrintAllWorlds, 4 - ShowStatus,"
                             " 5 - AddPlayer, 6 - DeletePlayer, 7 - Exit" << endl;
                     user_input = getValueInt(CW_MenuWorldCreate_E, CW_MenuWorldExit_E);
@@ -320,9 +326,11 @@ int main()
                             cout << "Exit" << endl;
                         } break;
                     }
+                } break;
 
                 // Player
                 case CN_MenuPlayer_E:
+                {
                     cout << "Menu->Player: 1 - Create, 2 - Delete, 3 - PrintAllPlayers, 4 - ShowStatus, 5 - Exit" << endl;
                     user_input = getValueInt(CP_MenuPlayerCreate_E, CP_MenuPlayerExit_E);
                     switch (user_input)
@@ -411,6 +419,52 @@ int main()
 
                         } break; 
                     }
+                } break;
+
+                // Load
+                case CN_MenuLoad_E:
+                {
+                    std::ifstream file;
+                    class World * cur_world; 
+
+                    file.open(file_name, ios_base::in | ios_base::binary);
+
+                    if (file.is_open())
+                    {
+                        cur_world = new World();
+                        cur_world->load(file);
+                        world.push_back(cur_world);
+                           
+                        file.close();
+
+                        cout << "Data was load from file: " << file_name << endl;
+                    }
+                    else
+                    {
+                        cout << "File " << file_name << " absent" << endl;
+                    }
+
+                } break;
+
+                // Save
+                case CN_MenuSave_E:
+                {
+                    std::ofstream file;
+
+                    file.open(file_name, ios_base::out | ios_base::binary | ios_base::trunc);
+
+                    if (file.is_open())
+                    {
+                        for (class World *w : world)
+                        {
+                            w->save(file); 
+                        }   
+
+                        file.close();
+
+                        cout << "Data was saved to file: " << file_name << endl;
+                    }
+                } break;
 
                 // Help
                 case CN_MenuHelp_E:

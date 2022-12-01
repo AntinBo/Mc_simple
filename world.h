@@ -1,5 +1,6 @@
 
 #include <string>
+#include <fstream>
 #include <list>
 
 class Player;
@@ -14,6 +15,7 @@ class World
             WT_one_biom
         };
 
+        World();
         World(std::string n, Type t);
         ~World();
 
@@ -21,6 +23,9 @@ class World
         bool addPlayer(class Player *p);
         bool deletePlayer(class Player *p);
         void showWorldStatus() const;
+
+        void load(std::ifstream & f);
+        void save(std::ofstream & f) const;
 
     protected:
 

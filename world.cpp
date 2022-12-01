@@ -1,10 +1,16 @@
 
 #include <iostream>
+#include <fstream>
 
 #include "world.h"
 #include "player.h"
 
 using namespace std;
+
+World::World()
+{
+
+}
 
 World::World(string n, Type t)
 {
@@ -59,4 +65,28 @@ bool World::deletePlayer(class Player *p)
     players.remove(p);    
 
     return true;   
+}
+
+void World::load(std::ifstream & f)
+{   
+    int length;
+    char c_name[128];
+
+    f.read((char *)&length, sizeof(length));
+    f.read(c_name, length);
+    f.read((char *)&type, sizeof(type));
+    
+    c_name[length] = '\0';
+    name = c_name;
+}
+
+void World::save(std::ofstream & f) const
+{
+    int length;
+
+    length = name.length();
+
+    f.write((const char *)&length, sizeof(length));
+    f.write(name.c_str(), length); 
+    f.write((const char *)&type, sizeof(type));
 }
