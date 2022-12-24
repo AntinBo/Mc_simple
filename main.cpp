@@ -9,6 +9,8 @@
 
 using namespace std;
 
+#define END_MARKER_VALUE 373
+
 /*
 
 class World
@@ -24,7 +26,7 @@ class Player
 
 // Change "world" to "list_worlds"
 // Global variables
-std::list<class World*> world;
+std::list<class World*> list_worlds;
 std::list<class Player*> list_players;
 /***********************************************************/
 
@@ -32,12 +34,12 @@ class World *searchWorldByName(const string & name)
 {
     class World *cur_world = nullptr;
 
-    for (class World *w : world)
+    for (class World *w : list_worlds)
     {
         if (w->getName() == name)
         {
             cur_world = w;
-            break;
+            break;      
         }
     }                            
 
@@ -113,6 +115,8 @@ int main()
     const char *menu = "Menu: 1 - World, 2 - Player, 3 - Load, 4 - Save, 5 - Help, 6 - Exit";
     string file_name = "Minecraft-01.bin";
     int n;
+    int size;
+    int end_marker;
 
     enum CommandMain
     {
@@ -190,7 +194,7 @@ int main()
 
                             // Creating new World
                             cur_world = new World(name, (World::Type)type);
-                            world.push_back(cur_world);
+                            list_worlds.push_back(cur_world);
                     
                         } break;
 
@@ -211,7 +215,7 @@ int main()
                             }
 
                             // Deleting World
-                            world.remove(cur_world);
+                            list_worlds.remove(cur_world);
                             delete cur_world;
 
                         } break;
@@ -219,7 +223,7 @@ int main()
                         case CW_MenuWorldPrintAllWorlds_E:
                         {
                             n = 1;
-                            for (class World *w : world)
+                            for (class World *w : list_worlds)
                                 cout << n++ << ". " << w->getName() << endl;
 
                         } break;
@@ -431,13 +435,33 @@ int main()
 
                     if (file.is_open())
                     {
-                        cur_world = new World();
-                        cur_world->load(file);
-                        world.push_back(cur_world);
-                           
+                        // 1 - Loading amount of instance of World in the list
+                        file.read((char *)&size, sizeof(size)); 
+
+                        // 2 - Loading every instnce World file
+                        for (; size > 0; size--)
+                        {
+                            cur_world = new World();
+                            cur_world->load(file);
+                            list_worlds.push_back(cur_world);
+                        }
+
+                        // 3 - Load amount of players in the list
+
+                        // 4 - Loading every Player's instance from file
+
+                        // 5 - Loading the end marker from the file
+                        file.read((char *)&end_marker, sizeof(end_marker));
                         file.close();
 
-                        cout << "Data was load from file: " << file_name << endl;
+                        if (end_marker == END_MARKER_VALUE)
+                        {
+                            cout << "Data was load from file: " << file_name << " successfully" << endl;
+                        }
+                        else
+                        {
+                            cout << "Data was load from file: " << file_name << " wrong" << endl;
+                        } 
                     }
                     else
                     {
@@ -455,10 +479,24 @@ int main()
 
                     if (file.is_open())
                     {
-                        for (class World *w : world)
+                        // 1 - Saving amount of instance of World in the list
+                        size = list_worlds.size();
+                        end_marker = END_MARKER_VALUE;
+
+                        file.write((const char *)&size, sizeof(size));
+
+                        // 2 - Saving every World's instance to file
+                        for (class World *w : list_worlds)
                         {
                             w->save(file); 
-                        }   
+                        }  
+
+                        // 3 - Save amount of players in the list
+
+                        // 4 - Saving every Player's instance to file
+
+                        // 5 - Saving the end marker to the file
+                        file.write((const char *)&end_marker, sizeof(end_marker));
 
                         file.close();
 

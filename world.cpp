@@ -72,7 +72,7 @@ void World::load(std::ifstream & f)
     int length;
     char c_name[128];
 
-    f.read((char *)&length, sizeof(length));
+    f.read((char *)&length, sizeof(length)); // int
     f.read(c_name, length);
     f.read((char *)&type, sizeof(type));
     
@@ -86,7 +86,7 @@ void World::save(std::ofstream & f) const
 
     length = name.length();
 
-    f.write((const char *)&length, sizeof(length));
+    f.write((const char *)&length, sizeof(length)); // int
     f.write(name.c_str(), length); 
     f.write((const char *)&type, sizeof(type));
 }
