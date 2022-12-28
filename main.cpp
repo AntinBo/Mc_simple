@@ -430,15 +430,16 @@ int main()
                 {
                     std::ifstream file;
                     class World * cur_world; 
+                    class Player * cur_player;
 
                     file.open(file_name, ios_base::in | ios_base::binary);
 
                     if (file.is_open())
                     {
                         // 1 - Loading amount of instance of World in the list
-                        file.read((char *)&size, sizeof(size)); 
+                        file.read((char *)&size, sizeof(size));
 
-                        // 2 - Loading every instnce World file
+                        // 2 - Loading every World's instnce from the file
                         for (; size > 0; size--)
                         {
                             cur_world = new World();
@@ -446,9 +447,16 @@ int main()
                             list_worlds.push_back(cur_world);
                         }
 
-                        // 3 - Load amount of players in the list
+                        // 3 - Loading amount of players in the list
+                        file.read((char *)&size, sizeof(size));
 
                         // 4 - Loading every Player's instance from file
+                        for (; size > 0; size--)
+                        {
+                            cur_player = new Player();
+                            cur_player->load(file);
+                            list_players.push_back(cur_player);
+                        }
 
                         // 5 - Loading the end marker from the file
                         file.read((char *)&end_marker, sizeof(end_marker));
@@ -492,8 +500,15 @@ int main()
                         }  
 
                         // 3 - Save amount of players in the list
+                        size = list_players.size();
+                         
+                        file.write((const char *)&size, sizeof(size));
 
                         // 4 - Saving every Player's instance to file
+                        for (class Player *p : list_players)
+                        {
+                            p->save(file);
+                        }
 
                         // 5 - Saving the end marker to the file
                         file.write((const char *)&end_marker, sizeof(end_marker));

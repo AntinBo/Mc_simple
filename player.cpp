@@ -6,6 +6,11 @@
 
 using namespace std;
 
+Player::Player()
+{
+
+}
+
 Player::Player(unsigned int _Id, const string & _nick, Skin::Colors c, Skin::Width w) :
     Id(_Id), nick(_nick), skin(c, w), health(100), state(PS_happy), world(nullptr)
 {
@@ -36,4 +41,55 @@ void Player::showPlayerStatus() const
     {
         cout << "    World: " << world->getName() << endl;
     }
+}
+
+void Player::load(std::ifstream &f)
+{
+    int length;
+    char c_nick[128];
+
+    // 1 - Loadnig Id
+    f.read((char *)&Id, sizeof(Id)); // int
+
+    // 2 - Loading Nick
+    f.read((char *)&length, sizeof(length)); // int + str
+    f.read(c_nick, length);
+
+    c_nick[length] = '\0';
+    nick = c_nick;
+
+    // 3 - Loading skin
+    skin.load(f);
+
+    // 4 - Loading health
+    f.read((char *)&health, sizeof(health));
+
+    // 5 - Loading state
+    f.read((char *)&state, sizeof(state));
+
+    // 6 - Loading world 
+    world = nullptr; // temporary
+}
+
+void Player::save(std::ofstream &f) const
+{
+    int length;
+
+    // 1 - Saving Id
+    f.write((const char *)&Id, sizeof(Id));
+
+    // 2 - Saving nick
+    length = nick.length();
+
+    f.write((const char *)&length, sizeof(length));
+    f.write(nick.c_str(), length);
+
+    // 3 - Saving skin
+    skin.save(f);
+
+    // 4 - Saving health
+    f.write((const char *)&health, sizeof(health));
+
+    // 5 - Saving state
+    f.write((const char *)&state, sizeof(state));
 }

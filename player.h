@@ -1,5 +1,7 @@
 
 #include <string>
+#include <fstream>
+#include <list>
 
 #include "skin.h"
 
@@ -16,6 +18,7 @@ class Player
             PS_none
         };
 
+        Player();
         Player(unsigned int I, const std::string & n, Skin::Colors c, Skin::Width w);
 
         const std::string & getNick() const;
@@ -25,13 +28,16 @@ class Player
 
         void showPlayerStatus() const;
 
+        void load(std::ifstream &f);
+        void save(std::ofstream &f) const;
+
     protected:
 
     private:
-        unsigned int Id;     /* uniq identificator */
+        unsigned int Id;     /* uniq identificator */ 
         std::string  nick;   /* nickname */
-        class Skin   skin;   /* skin */            
-        unsigned int health; /* health */ 
-        State        state;  /* emotion */
-        class World *world;
+        class Skin   skin;   /* skin */    // Create funcs save and load for this class          
+        unsigned int health; /* health */  // int
+        State        state;  /* emotion */ // int
+        class World *world;                
 };
