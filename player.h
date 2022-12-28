@@ -28,7 +28,7 @@ class Player
 
         void showPlayerStatus() const;
 
-        void load(std::ifstream &f);
+        void load(std::ifstream &f, std::list<class World *> & list_worlds);
         void save(std::ofstream &f) const;
 
     protected:

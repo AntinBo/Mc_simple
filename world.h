@@ -22,6 +22,7 @@ class World
         const std::string & getName() const;
         bool addPlayer(class Player *p);
         bool deletePlayer(class Player *p);
+        bool loadPlayer(class Player *p_new, class Player *p_old);
         void showWorldStatus() const;
 
         void load(std::ifstream & f);

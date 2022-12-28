@@ -43,10 +43,11 @@ void Player::showPlayerStatus() const
     }
 }
 
-void Player::load(std::ifstream &f)
+void Player::load(std::ifstream &f, std::list<class World *> &list_worlds)
 {
     int length;
     char c_nick[128];
+    class Player * p;
 
     // 1 - Loadnig Id
     f.read((char *)&Id, sizeof(Id)); // int
@@ -67,13 +68,22 @@ void Player::load(std::ifstream &f)
     // 5 - Loading state
     f.read((char *)&state, sizeof(state));
 
-    // 6 - Loading world 
-    world = nullptr; // temporary
+    // 6 - Loadnig old self-pointer
+    f.read((char *)&p, sizeof(p));
+    for (class World *w : list_worlds)
+    {   
+        if (w->loadPlayer(this, p))
+        {
+            world = w;
+            break;
+        }
+    }
 }
 
 void Player::save(std::ofstream &f) const
 {
     int length;
+    const class Player *p;
 
     // 1 - Saving Id
     f.write((const char *)&Id, sizeof(Id));
@@ -92,4 +102,8 @@ void Player::save(std::ofstream &f) const
 
     // 5 - Saving state
     f.write((const char *)&state, sizeof(state));
+
+    // 6 - Saving self-pointer
+    p = this;
+    f.write((const char *)&p, sizeof(p));
 }

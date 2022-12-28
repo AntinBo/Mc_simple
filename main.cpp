@@ -454,7 +454,7 @@ int main()
                         for (; size > 0; size--)
                         {
                             cur_player = new Player();
-                            cur_player->load(file);
+                            cur_player->load(file, list_worlds);
                             list_players.push_back(cur_player);
                         }
 
