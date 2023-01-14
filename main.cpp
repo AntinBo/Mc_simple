@@ -100,6 +100,42 @@ int getValueInt(int diapason_1, int diapason_2)
 
     return 0;
 }
+
+bool getValueYesOrNo(void)
+{
+    char input;
+
+    while (true)
+    {
+        cin >> input;
+
+        if (cin.fail())
+        {
+            cin.clear();
+            cin.ignore();
+            cout << "Wrong input! Try again" << endl;
+            continue;
+        }
+        else
+        {
+            if (input == 'Y' || input == 'N')
+            {
+                cin.ignore(32767, '\n');
+                if (input == 'Y')
+                    return true;
+                else
+                    return false;
+            }
+            else
+            {
+                cout << "Wrong input! Try again" << endl;
+                continue;
+            }
+        }
+    }
+
+    return false;
+}
 /***********************************************************/
 
 int main()
@@ -431,6 +467,34 @@ int main()
                     std::ifstream file;
                     class World * cur_world; 
                     class Player * cur_player;
+
+                    // Check old objects worlds and players
+                    if (list_worlds.size() != 0 || list_players.size() != 0)
+                    {
+                        cout << "List of worlds or players aren't empty. Do you want to delete them?[Y/N]" << endl;
+                        if (getValueYesOrNo())
+                        {
+                            // Deletes all worlds and players
+                            
+                            for (class World *cur_world : list_worlds)
+                            {
+                                // Deleting World
+                                delete cur_world;
+                            }
+                            list_worlds.clear();
+
+                            for (class Player *cur_player : list_players)
+                            {
+                                // Deleting Player
+                                delete cur_player;
+                            }
+                            list_players.clear();
+                        }
+                        else 
+                        {
+                            break;
+                        }
+                    }
 
                     file.open(file_name, ios_base::in | ios_base::binary);
 
