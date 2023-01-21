@@ -18,6 +18,14 @@ Player::Player(unsigned int _Id, const string & _nick, Skin::Colors c, Skin::Wid
         << ", " << (int) skin.getWidth() << ", " << health << ", " << state << ")" << endl;
 }
 
+Player::~Player()
+{
+    if (world != nullptr)
+    {
+        world->deletePlayer(this);
+    }
+}
+
 const string & Player::getNick() const
 {
     return nick;

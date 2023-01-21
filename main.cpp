@@ -358,7 +358,10 @@ int main()
 
                             // Delete Player from World
                             if (cur_world != nullptr && cur_player != nullptr)
+                            {
                                 cur_world->deletePlayer(cur_player);
+                                cur_player->setWorld(nullptr);
+                            }
                         } break;
 
                         case CW_MenuWorldExit_E:
@@ -400,7 +403,6 @@ int main()
                         {
                             string nick;
                             class Player *cur_player;
-                            class World *cur_world;
 
                             cout << "Menu->Player->Delete: input player`s nick" << endl;
                             cin >> nick;
@@ -414,11 +416,6 @@ int main()
                             }
 
                             // Deleting player
-                            cur_world = cur_player->getWorld();
-                            if (cur_world != nullptr)
-                            {
-                                cur_world->deletePlayer(cur_player);
-                            }
                             list_players.remove(cur_player);
                             delete cur_player;
 

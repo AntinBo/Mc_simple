@@ -20,6 +20,7 @@ class Player
 
         Player();
         Player(unsigned int I, const std::string & n, Skin::Colors c, Skin::Width w);
+        ~Player();
 
         const std::string & getNick() const;
         

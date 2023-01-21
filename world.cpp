@@ -22,6 +22,11 @@ World::World(string n, Type t)
 
 World::~World()
 {
+    for (class Player *p : players)
+    {
+        p->setWorld(nullptr);
+    }
+
     cout << "World was deleted(" << name << ", " << type << ")" << endl;
 }
 
