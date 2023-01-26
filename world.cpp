@@ -48,7 +48,7 @@ const string & World::getName() const
     return name;
 }
 
-bool World::addPlayer(class Player *p)
+bool World::joinPlayer(class Player *p)
 {
     class World *w;
 
@@ -65,7 +65,7 @@ bool World::addPlayer(class Player *p)
     return false;                             
 }
 
-bool World::deletePlayer(class Player *p)
+bool World::disjoinPlayer(class Player *p)
 {
     players.remove(p);    
 

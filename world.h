@@ -20,8 +20,8 @@ class World
         ~World();
 
         const std::string & getName() const;
-        bool addPlayer(class Player *p);
-        bool deletePlayer(class Player *p);
+        bool joinPlayer(class Player *p);
+        bool disjoinPlayer(class Player *p);
         bool loadPlayer(class Player *p_new, class Player *p_old);
         void showWorldStatus() const;
 

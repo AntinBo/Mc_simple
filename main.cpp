@@ -170,8 +170,8 @@ int main()
         CW_MenuWorldDelete_E,
         CW_MenuWorldPrintAllWorlds_E,
         CW_MenuWorldShowStatus_E,
-        CW_MenuWorldAddPlayer_E,
-        CW_MenuWorldDeletePlayer_E,
+        CW_MenuWorldJoinPlayer_E,
+        CW_MenuWorldDisjoinPlayer_E,
         CW_MenuWorldExit_E
     };
 
@@ -208,7 +208,7 @@ int main()
                 case CN_MenuWorld_E:
                 {
                     cout << "Menu->World: 1 - Create, 2 - Delete, 3 - PrintAllWorlds, 4 - ShowStatus,"
-                            " 5 - AddPlayer, 6 - DeletePlayer, 7 - Exit" << endl;
+                            " 5 - JoinPlayer, 6 - DisjoinPlayer, 7 - Exit" << endl;
                     user_input = getValueInt(CW_MenuWorldCreate_E, CW_MenuWorldExit_E);
                     switch (user_input)
                     {
@@ -285,7 +285,7 @@ int main()
 
                         } break;
 
-                        case CW_MenuWorldAddPlayer_E:
+                        case CW_MenuWorldJoinPlayer_E:
                         {
                             bool add;
                             string name;
@@ -293,7 +293,7 @@ int main()
                             class World *cur_world;
                             class Player *cur_player;
 
-                            cout << "Menu->World->AddPlayer: input world name" << endl;
+                            cout << "Menu->World->JoinPlayer: input world name" << endl;
                             cin >> name;
 
                             // Check that World with this name exsist
@@ -304,7 +304,7 @@ int main()
                                 break;
                             }   
 
-                            cout << "Menu->World->AddPlayer: input player nick" << endl;
+                            cout << "Menu->World->JoinPlayer: input player nick" << endl;
                             cin >> nick;
 
                             // Check that Player with this nick exsist
@@ -318,7 +318,7 @@ int main()
                             // Add Player to World
                             if (cur_world != nullptr && cur_player != nullptr)
                             {
-                                add = cur_world->addPlayer(cur_player);
+                                add = cur_world->joinPlayer(cur_player);
 
                                 if (add == false)
                                 {
@@ -328,7 +328,7 @@ int main()
 
                         } break;
 
-                        case CW_MenuWorldDeletePlayer_E:
+                        case CW_MenuWorldDisjoinPlayer_E:
                         {
                             string name;
                             string nick;
@@ -359,7 +359,7 @@ int main()
                             // Delete Player from World
                             if (cur_world != nullptr && cur_player != nullptr)
                             {
-                                cur_world->deletePlayer(cur_player);
+                                cur_world->disjoinPlayer(cur_player);
                                 cur_player->setWorld(nullptr);
                             }
                         } break;

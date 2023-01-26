@@ -22,7 +22,7 @@ Player::~Player()
 {
     if (world != nullptr)
     {
-        world->deletePlayer(this);
+        world->joinPlayer(this);
     }
 }
 
