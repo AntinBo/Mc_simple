@@ -29,6 +29,9 @@ class Player
 
         void showPlayerStatus() const;
 
+        void setXY(float pos_x, float pos_y);
+        void getXY(float & pos_x, float & pos_y) const;
+
         void load(std::ifstream &f, std::list<class World *> & list_worlds);
         void save(std::ofstream &f) const;
 
@@ -37,8 +40,9 @@ class Player
     private:
         unsigned int Id;     /* uniq identificator */ 
         std::string  nick;   /* nickname */
-        class Skin   skin;   /* skin */    // Create funcs save and load for this class          
-        unsigned int health; /* health */  // int
-        State        state;  /* emotion */ // int
+        class Skin   skin;   /* skin */       
+        unsigned int health; /* health */               
+        State        state;  /* emotion */              
+        float        x, y;   /* player's cordinats */
         class World *world;                
 };

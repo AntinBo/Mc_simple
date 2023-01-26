@@ -172,6 +172,7 @@ int main()
         CW_MenuWorldShowStatus_E,
         CW_MenuWorldJoinPlayer_E,
         CW_MenuWorldDisjoinPlayer_E,
+        CW_MenuWorldShowMap_E,
         CW_MenuWorldExit_E
     };
 
@@ -181,6 +182,7 @@ int main()
         CP_MenuPlayerDelete_E,
         CP_MenuPlayerPrintAllPlayers_E,
         CP_MenuPlayerShowStatus_E,
+        CP_MenuPlayerSetPosition_E,
         CP_MenuPlayerExit_E
     };
 
@@ -208,7 +210,7 @@ int main()
                 case CN_MenuWorld_E:
                 {
                     cout << "Menu->World: 1 - Create, 2 - Delete, 3 - PrintAllWorlds, 4 - ShowStatus,"
-                            " 5 - JoinPlayer, 6 - DisjoinPlayer, 7 - Exit" << endl;
+                            " 5 - JoinPlayer, 6 - DisjoinPlayer, 7 - ShowMap, 8 - Exit" << endl;
                     user_input = getValueInt(CW_MenuWorldCreate_E, CW_MenuWorldExit_E);
                     switch (user_input)
                     {
@@ -364,6 +366,25 @@ int main()
                             }
                         } break;
 
+                        case CW_MenuWorldShowMap_E:
+                        {
+                            string name;
+                            class World *cur_world;
+
+                            cout << "Menu->World->ShowMap: input world name" << endl;
+                            cin >> name;
+
+                            // Check that World with this name exsist
+                            cur_world = searchWorldByName(name);
+                            if (cur_world == nullptr)
+                            {
+                                cout << "World with this name doesn`t exist" << endl;
+                                break;
+                            }
+
+                            cur_world->showMap();
+                        } break;
+
                         case CW_MenuWorldExit_E:
                         {
                             cout << "Exit" << endl;
@@ -374,7 +395,7 @@ int main()
                 // Player
                 case CN_MenuPlayer_E:
                 {
-                    cout << "Menu->Player: 1 - Create, 2 - Delete, 3 - PrintAllPlayers, 4 - ShowStatus, 5 - Exit" << endl;
+                    cout << "Menu->Player: 1 - Create, 2 - Delete, 3 - PrintAllPlayers, 4 - ShowStatus, 5 - SetPosition, 6 - Exit" << endl;
                     user_input = getValueInt(CP_MenuPlayerCreate_E, CP_MenuPlayerExit_E);
                     switch (user_input)
                     {
@@ -448,6 +469,28 @@ int main()
                             // Show status
                             cur_player->showPlayerStatus();
                             
+                        } break;
+
+                        case CP_MenuPlayerSetPosition_E:
+                        {
+                            float x, y;
+                            string nick;
+                            class Player *cur_player;
+
+                            cout << "Menu->Player->SetPosition: input player nick" << endl;
+                            cin >> nick;
+
+                            // Check that Player with this nick exsist
+                            cur_player = searchPlayerByNick(nick);
+                            if (cur_player == nullptr)
+                            {
+                                cout << "Player with this nick doesn`t exist" << endl;
+                                break;
+                            }
+
+                            cout << "Input position of player(x, y)" << endl;
+                            cin >> x >> y;
+                            cur_player->setXY(x, y);
                         } break;
 
                         case CP_MenuPlayerExit_E:

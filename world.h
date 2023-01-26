@@ -20,10 +20,14 @@ class World
         ~World();
 
         const std::string & getName() const;
+        
         bool joinPlayer(class Player *p);
         bool disjoinPlayer(class Player *p);
+
         bool loadPlayer(class Player *p_new, class Player *p_old);
+
         void showWorldStatus() const;
+        void showMap() const;
 
         void load(std::ifstream & f);
         void save(std::ofstream & f) const;

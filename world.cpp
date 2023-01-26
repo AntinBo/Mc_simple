@@ -5,6 +5,8 @@
 #include "world.h"
 #include "player.h"
 
+#define WORLD_MAP_SIZE 10
+
 using namespace std;
 
 World::World()
@@ -39,8 +41,44 @@ void World::showWorldStatus() const
     cout << "  --------" << endl;
     for (class Player *p : players)
     {
-        cout << "  " << n << ". " << p->getNick() << endl;
+        cout << "  " << n++ << ". " << p->getNick() << endl;
     }
+}
+
+void World::showMap() const
+{
+    float x, y;
+    bool empty_cell;
+    float cur_x, cur_y;
+
+    cout << "World(" << name << ", " << type << ")" << endl;
+    cout << "+ 0  1  2  3  4  5  6  7  8  9 +" << endl;
+    for (cur_y = 0; cur_y < WORLD_MAP_SIZE; cur_y++)
+    {
+        cout << "|";
+
+        for (cur_x = 0; cur_x < WORLD_MAP_SIZE; cur_x++)
+        {
+
+            empty_cell = true;
+
+            for (class Player *p : players)
+            {
+                p->getXY(x, y);
+                if (cur_x == x && cur_y == y)
+                {
+                    cout << " * ";
+                    empty_cell = false;
+                }
+            } 
+
+            if (empty_cell)
+                cout << " - ";
+        }
+
+        cout << "|" << endl;
+    }
+    cout << "+ 0  1  2  3  4  5  6  7  8  9 +" << endl;
 }
 
 const string & World::getName() const
