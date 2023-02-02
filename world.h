@@ -28,8 +28,9 @@ class World
 
         void showWorldStatus() const;
         void showMap() const;
+        static float getMaxMapSize();
 
-        void load(std::ifstream & f);
+        void load(std::ifstream &f);
         void save(std::ofstream & f) const;
 
     protected:

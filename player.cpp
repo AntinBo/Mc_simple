@@ -44,13 +44,13 @@ class World *Player::getWorld()
 
 void Player::showPlayerStatus() const
 {
-    cout << "  Player(" << Id << ", " << nick << ", " << (int) skin.getColor()
-        << ", " << (int) skin.getWidth() << ", " << health << ", " << state << ")" << endl;
+    cout << "  Player(" << Id << ", " << nick << ", " << (int)skin.getColor()
+         << ", " << (int)skin.getWidth() << ", " << health << ", " << state << ", " << x << ", " << y << ")" << endl;
     if (world != nullptr)
     {
         cout << "    World: " << world->getName() << endl;
     }
-}
+} 
 
 void Player::setXY(float pos_x, float pos_y)
 {
@@ -62,6 +62,8 @@ void Player::getXY(float & pos_x, float & pos_y) const
 {
     pos_x = x;
     pos_y = y;
+    //pos_x = rand() % ((int)World::getMaxMapSize());
+    //pos_y = rand() % ((int)World::getMaxMapSize());
 }
 
 void Player::load(std::ifstream &f, std::list<class World *> &list_worlds)
@@ -89,7 +91,13 @@ void Player::load(std::ifstream &f, std::list<class World *> &list_worlds)
     // 5 - Loading state
     f.read((char *)&state, sizeof(state));
 
-    // 6 - Loadnig old self-pointer
+    // 6 - Loading x
+    f.read((char *)&x, sizeof(x));
+
+    // 7 - Loading y
+    f.read((char *)&y, sizeof(y));
+
+    // 8 - Loadnig old self-pointer
     f.read((char *)&p, sizeof(p));
     for (class World *w : list_worlds)
     {   
@@ -124,7 +132,13 @@ void Player::save(std::ofstream &f) const
     // 5 - Saving state
     f.write((const char *)&state, sizeof(state));
 
-    // 6 - Saving self-pointer
+    // 6 - Saving x
+    f.write((const char *)&x, sizeof(x));
+
+    // 7 - Saving y
+    f.write((const char *)&y, sizeof(y));
+
+    // 8 - Saving self-pointer
     p = this;
     f.write((const char *)&p, sizeof(p));
 }

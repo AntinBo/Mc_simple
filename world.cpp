@@ -55,7 +55,7 @@ void World::showMap() const
     cout << "+ 0  1  2  3  4  5  6  7  8  9 +" << endl;
     for (cur_y = 0; cur_y < WORLD_MAP_SIZE; cur_y++)
     {
-        cout << "|";
+        cout << cur_y;
 
         for (cur_x = 0; cur_x < WORLD_MAP_SIZE; cur_x++)
         {
@@ -77,8 +77,13 @@ void World::showMap() const
         }
 
         cout << "|" << endl;
-    }
-    cout << "+ 0  1  2  3  4  5  6  7  8  9 +" << endl;
+    }                                       
+    cout << "+------------------------------+" << endl;
+}
+
+float World::getMaxMapSize()
+{
+    return WORLD_MAP_SIZE;
 }
 
 const string & World::getName() const
