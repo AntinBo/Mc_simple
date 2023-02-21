@@ -1,4 +1,7 @@
 
+#ifndef PLAYER_H
+#define PLAYER_H
+
 #include <string>
 #include <fstream>
 #include <list>
@@ -46,3 +49,5 @@ class Player
         float        x, y;   /* player's cordinats */
         class World *world;                
 };
+
+#endif /* PLAYER_H */

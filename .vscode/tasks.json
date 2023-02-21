@@ -13,6 +13,7 @@
 				"skin.cpp",
 				"player.cpp",
 				"world.cpp",
+				"world_objects.cpp",
 				"-o",
 				"main.exe"
 			    // "${fileDirname}\\${fileBasenameNoExtension}.exe"

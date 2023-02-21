@@ -1,7 +1,12 @@
 
+#ifndef WORLD_H
+#define WORLD_H
+
 #include <string>
 #include <fstream>
 #include <list>
+
+#include "world_objects.h"
 
 class Player;
 
@@ -33,10 +38,20 @@ class World
         void load(std::ifstream &f);
         void save(std::ofstream & f) const;
 
+        void setTunaXY(float pos_x, float pos_y);
+        // void getTunaXY(float &pos_x, float &pos_y) const;
+        void setCarpXY(float pos_x, float pos_y);
+        // void getCarpXY(float &pos_x, float &pos_y) const;
+
     protected:
 
     private:
         std::string name;
         Type type;
         std::list<class Player*> players;
+        // Add Tuna and Carp - x/y positions(show map, tuna - T, carp - C)
+        Tuna myLanch;
+        Carp myDinner;
 };
+
+#endif /* WORLD_H */

@@ -4,6 +4,7 @@
 
 #include "world.h"
 #include "player.h"
+#include "world_objects.h"
 
 #define WORLD_MAP_SIZE 10
 
@@ -174,3 +175,14 @@ void World::save(std::ofstream & f) const
         f.write((const char *)&p, sizeof(p));
     }
 }
+
+void World::setTunaXY(float pos_x, float pos_y)
+{
+    myLanch.setXY(pos_x, pos_y);
+}
+// void getTunaXY(float &pos_x, float &pos_y) const
+void World::setCarpXY(float pos_x, float pos_y)
+{
+    myDinner.setXY(pos_x, pos_y);
+}
+// void getCarpXY(float &pos_x, float &pos_y) const

@@ -173,6 +173,8 @@ int main()
         CW_MenuWorldJoinPlayer_E,
         CW_MenuWorldDisjoinPlayer_E,
         CW_MenuWorldShowMap_E,
+        CW_MenuWorldSetTunaXY_E,
+        CW_MenuWorldSetCarpXY_E,
         CW_MenuWorldExit_E
     };
 
@@ -197,7 +199,7 @@ int main()
            4 Exit
     */
 
-    cout << menu << endl;
+        cout << menu << endl;
 
     while (run)
     {
@@ -497,7 +499,7 @@ int main()
                         {
                             cout << "Exit" << endl;
 
-                        } break; 
+                        } break;
                     }
                 } break;
 
