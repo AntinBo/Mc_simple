@@ -141,6 +141,8 @@ bool getValueYesOrNo(void)
 int main()
 {   
     int user_input = 0;
+    int user_inputX;
+    int user_inputY;
     bool run = true;
     string name;
     int type;
@@ -212,7 +214,7 @@ int main()
                 case CN_MenuWorld_E:
                 {
                     cout << "Menu->World: 1 - Create, 2 - Delete, 3 - PrintAllWorlds, 4 - ShowStatus,"
-                            " 5 - JoinPlayer, 6 - DisjoinPlayer, 7 - ShowMap, 8 - Exit" << endl;
+                            " 5 - JoinPlayer, 6 - DisjoinPlayer, 7 - ShowMap, 8 - SetTunaXY, 9 - SetCarpXY, 10 - Exit" << endl;
                     user_input = getValueInt(CW_MenuWorldCreate_E, CW_MenuWorldExit_E);
                     switch (user_input)
                     {
@@ -385,6 +387,38 @@ int main()
                             }
 
                             cur_world->showMap();
+                        } break;
+
+                        case CW_MenuWorldSetTunaXY_E:
+                        {
+                            string name;
+                            class World *cur_world;
+
+                            cout << "Menu->World->SetTunaXY: input world name" << endl;
+                            cin >> name;
+
+                            // Check that World with this name exsist
+                            cur_world = searchWorldByName(name);
+                            if (cur_world == nullptr)
+                            {
+                                cout << "World with this name doesn`t exist" << endl;
+                                break;
+                            }
+
+                            // Get X and Y from user for Tuna
+                            cout << "Input value for X for Tuna:" << endl;
+                            user_inputX = getValueInt(0, WORLD_MAP_SIZE);
+
+                            cout << "Input value for Y for Tuna:" << endl;
+                            user_inputY = getValueInt(0, WORLD_MAP_SIZE);
+
+                            // Set X and Y for Tuna
+                            cur_world->setTunaXY(user_inputX, user_inputY);
+                        } break;
+
+                        case CW_MenuWorldSetCarpXY_E:
+                        {
+
                         } break;
 
                         case CW_MenuWorldExit_E:

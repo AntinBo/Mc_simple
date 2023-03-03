@@ -8,6 +8,8 @@
 
 #include "world_objects.h"
 
+#define WORLD_MAP_SIZE 10
+
 class Player;
 
 class World
@@ -50,7 +52,7 @@ class World
         Type type;
         std::list<class Player *> players;
         // Add Tuna and Carp - x/y positions(show map, tuna - T, carp - C)
-        Tuna myLanch;
+        Tuna myLunch;
         Carp myDinner;
 };
 

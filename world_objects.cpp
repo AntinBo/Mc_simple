@@ -33,6 +33,12 @@ void Fish::setXY(float pos_x, float pos_y)
     y = pos_y;
 }
 
+void Fish::getXY(float &pos_x, float &pos_y) const
+{
+    pos_x = x;
+    pos_y = y;
+}
+
 /* ---------- class Tuna ---------- */
 
 Tuna::Tuna()

@@ -16,6 +16,7 @@ class Fish
         void save(std::ofstream &f) const;
 
         void setXY(float pos_x, float pos_y);
+        void getXY(float &pos_x, float &pos_y) const;
 
     protected:
 

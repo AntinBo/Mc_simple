@@ -6,8 +6,6 @@
 #include "player.h"
 #include "world_objects.h"
 
-#define WORLD_MAP_SIZE 10
-
 using namespace std;
 
 World::World()
@@ -63,6 +61,7 @@ void World::showMap() const
 
             empty_cell = true;
 
+            // Search players in position X, Y
             for (class Player *p : players)
             {
                 p->getXY(x, y);
@@ -71,7 +70,15 @@ void World::showMap() const
                     cout << " * ";
                     empty_cell = false;
                 }
-            } 
+            }
+
+            // Search Tuna in position X, Y
+            myLunch.getXY(x, y);
+            if (cur_x == x && cur_y == y)
+            {
+                cout << " T ";
+                empty_cell = false;
+            }
 
             if (empty_cell)
                 cout << " - ";
@@ -154,7 +161,7 @@ void World::load(std::ifstream & f)
     }
 
     // Tuna 
-    myLanch.load(f);
+    myLunch.load(f);
 
     // Carp
     myDinner.load(f);
@@ -182,7 +189,7 @@ void World::save(std::ofstream & f) const
     }
 
     // Tuna
-    myLanch.save(f);
+    myLunch.save(f);
 
     // Carp
     myDinner.save(f);
@@ -190,7 +197,7 @@ void World::save(std::ofstream & f) const
 
 void World::setTunaXY(float pos_x, float pos_y)
 {
-    myLanch.setXY(pos_x, pos_y);
+    myLunch.setXY(pos_x, pos_y);
 }
 // void getTunaXY(float &pos_x, float &pos_y) const
 void World::setCarpXY(float pos_x, float pos_y)
