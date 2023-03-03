@@ -48,7 +48,7 @@ class World
     private:
         std::string name;
         Type type;
-        std::list<class Player*> players;
+        std::list<class Player *> players;
         // Add Tuna and Carp - x/y positions(show map, tuna - T, carp - C)
         Tuna myLanch;
         Carp myDinner;

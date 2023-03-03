@@ -152,6 +152,12 @@ void World::load(std::ifstream & f)
         f.read((char *)&p, sizeof(p));
         players.push_back(p);
     }
+
+    // Tuna 
+    myLanch.load(f);
+
+    // Carp
+    myDinner.load(f);
 }
 
 void World::save(std::ofstream & f) const
@@ -174,6 +180,12 @@ void World::save(std::ofstream & f) const
     {
         f.write((const char *)&p, sizeof(p));
     }
+
+    // Tuna
+    myLanch.save(f);
+
+    // Carp
+    myDinner.save(f);
 }
 
 void World::setTunaXY(float pos_x, float pos_y)

@@ -2,6 +2,7 @@
 #ifndef WORLD_OBJECTS_H
 #define WORLD_OBJECTS_H
 
+#include <fstream>
 #include <string>
 
 class Fish
