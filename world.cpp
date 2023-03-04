@@ -6,6 +6,8 @@
 #include "player.h"
 #include "world_objects.h"
 
+#define WORLD_MAP_SIZE 10
+
 using namespace std;
 
 World::World()
@@ -61,23 +63,34 @@ void World::showMap() const
 
             empty_cell = true;
 
-            // Search players in position X, Y
-            for (class Player *p : players)
-            {
-                p->getXY(x, y);
-                if (cur_x == x && cur_y == y)
-                {
-                    cout << " * ";
-                    empty_cell = false;
-                }
-            }
-
             // Search Tuna in position X, Y
             myLunch.getXY(x, y);
             if (cur_x == x && cur_y == y)
             {
                 cout << " T ";
                 empty_cell = false;
+            }
+
+            // Search Carp in position X, Y
+            myDinner.getXY(x, y);
+            if (cur_x == x && cur_y == y)
+            {
+                cout << " C ";
+                empty_cell = false;
+            }
+
+            // Search players in position X, Y
+            for (class Player *p : players)
+            {
+                p->getXY(x, y);
+                if (cur_x == x && cur_y == y)
+                {
+                    if (empty_cell)
+                    {
+                        cout << " * ";
+                        empty_cell = false;
+                    }
+                }
             }
 
             if (empty_cell)
@@ -205,3 +218,40 @@ void World::setCarpXY(float pos_x, float pos_y)
     myDinner.setXY(pos_x, pos_y);
 }
 // void getCarpXY(float &pos_x, float &pos_y) const
+
+void World::playRound()
+{
+    float x, y;
+    float cur_x_tuna, cur_y_tuna, cur_x_carp, cur_y_carp;
+
+    // Get random X and Y for Tuna and set new position for Tuna
+    cur_x_tuna = rand() % ((int)World::getMaxMapSize());
+    cur_y_tuna = rand() % ((int)World::getMaxMapSize());
+    setTunaXY(cur_x_tuna, cur_y_tuna);
+
+    // Get random X and Y for Carp and set new position for Carp
+    cur_x_carp = rand() % ((int)World::getMaxMapSize());
+    cur_y_carp = rand() % ((int)World::getMaxMapSize());
+    setCarpXY(cur_x_carp, cur_y_carp);
+
+    myLunch.getXY(cur_x_tuna, cur_y_tuna);
+    myDinner.getXY(cur_x_carp, cur_y_carp);
+
+    // Reckon of points to player
+    for (class Player *p : players)
+    {
+        p->getXY(x, y); 
+
+        // Catch Tuna
+        if (cur_x_tuna == x && cur_y_tuna == y)
+        {
+            p->fishHasCatched();
+        }
+
+        // Catch Carp
+        if (cur_x_carp == x && cur_y_carp == y)
+        {
+            p->fishHasCatched();
+        }
+    }
+}

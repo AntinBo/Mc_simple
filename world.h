@@ -8,8 +8,6 @@
 
 #include "world_objects.h"
 
-#define WORLD_MAP_SIZE 10
-
 class Player;
 
 class World
@@ -44,6 +42,8 @@ class World
         // void getTunaXY(float &pos_x, float &pos_y) const;
         void setCarpXY(float pos_x, float pos_y);
         // void getCarpXY(float &pos_x, float &pos_y) const;
+
+        void playRound();
 
     protected:
 

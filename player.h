@@ -38,6 +38,8 @@ class Player
         void load(std::ifstream &f, std::list<class World *> & list_worlds);
         void save(std::ofstream &f) const;
 
+        void fishHasCatched();
+
     protected:
 
     private:
@@ -45,7 +47,8 @@ class Player
         std::string  nick;   /* nickname */
         class Skin   skin;   /* skin */       
         unsigned int health; /* health */               
-        State        state;  /* emotion */              
+        State        state;  /* emotion */
+        int          fish;   /* amount of catched fish */        
         float        x, y;   /* player's cordinats */
         class World *world;                
 };

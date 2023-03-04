@@ -13,7 +13,7 @@ Player::Player() :
 }
 
 Player::Player(unsigned int _Id, const string & _nick, Skin::Colors c, Skin::Width w) :
-    Id(_Id), nick(_nick), skin(c, w), health(100), state(PS_happy), x(0.0), y(0.0), world(nullptr)
+    Id(_Id), nick(_nick), skin(c, w), health(100), state(PS_happy), fish(0), x(0.0), y(0.0), world(nullptr)
 {
     cout << "Player was created(" << Id << ", " << nick << ", " << (int) skin.getColor()
         << ", " << (int) skin.getWidth() << ", " << health << ", " << state << ")" << endl;
@@ -45,7 +45,7 @@ class World *Player::getWorld()
 void Player::showPlayerStatus() const
 {
     cout << "  Player(" << Id << ", " << nick << ", " << (int)skin.getColor()
-         << ", " << (int)skin.getWidth() << ", " << health << ", " << state << ", " << x << ", " << y << ")" << endl;
+         << ", " << (int)skin.getWidth() << ", " << health << ", " << state << ", f: " << fish << ", x: " << x << ", y: " << y << ")" << endl;
     if (world != nullptr)
     {
         cout << "    World: " << world->getName() << endl;
@@ -107,6 +107,9 @@ void Player::load(std::ifstream &f, std::list<class World *> &list_worlds)
             break;
         }
     }
+
+    // 9 - Fish 0
+    fish = 0;
 }
 
 void Player::save(std::ofstream &f) const
@@ -141,4 +144,9 @@ void Player::save(std::ofstream &f) const
     // 8 - Saving self-pointer
     p = this;
     f.write((const char *)&p, sizeof(p));
+}
+
+void Player::fishHasCatched()
+{
+    fish++;
 }
