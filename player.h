@@ -39,6 +39,7 @@ class Player
         void save(std::ofstream &f) const;
 
         void fishHasCatched();
+        void showFish();
 
     protected:
 

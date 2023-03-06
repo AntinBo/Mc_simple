@@ -108,8 +108,8 @@ void Player::load(std::ifstream &f, std::list<class World *> &list_worlds)
         }
     }
 
-    // 9 - Fish 0
-    fish = 0;
+    // 9 - Loading Fish
+    f.read((char *)&fish, sizeof(fish));
 }
 
 void Player::save(std::ofstream &f) const
@@ -144,9 +144,17 @@ void Player::save(std::ofstream &f) const
     // 8 - Saving self-pointer
     p = this;
     f.write((const char *)&p, sizeof(p));
+
+    // 9 - Saving Fish
+    f.write((const char *)&fish, sizeof(fish));
 }
 
 void Player::fishHasCatched()
 {
     fish++;
+}
+
+void Player::showFish()
+{
+    cout << "f: " << fish << endl;
 }

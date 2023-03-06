@@ -465,9 +465,11 @@ int main()
                         {    
                             n = 1;
                             for (class Player *p : list_players)
-                                cout << n++ << ". " << p->getNick() << endl;
-
-                        } break;
+                            {
+                                cout << n++ << ". " << p->getNick() << " - f:";
+                                p->showFish();
+                            }
+                        } break; 
 
                         case CP_MenuPlayerShowStatus_E:
                         {
