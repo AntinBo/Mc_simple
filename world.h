@@ -8,6 +8,8 @@
 
 #include "world_objects.h"
 
+#define FISH_COUNT 2
+
 class Player;
 
 class World
@@ -51,9 +53,7 @@ class World
         std::string name;
         Type type;
         std::list<class Player *> players;
-        // Add Tuna and Carp - x/y positions(show map, tuna - T, carp - C)
-        Tuna myLunch;
-        Carp myDinner;
+        Fish * fish[FISH_COUNT];
 };
 
 #endif /* WORLD_H */

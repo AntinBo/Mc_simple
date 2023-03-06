@@ -6,14 +6,12 @@
 
 using namespace std;
 
-Player::Player() : 
-    x(0.0), y(0.0)
+Player::Player()
 {
-
 }
 
 Player::Player(unsigned int _Id, const string & _nick, Skin::Colors c, Skin::Width w) :
-    Id(_Id), nick(_nick), skin(c, w), health(100), state(PS_happy), fish(0), x(0.0), y(0.0), world(nullptr)
+    Id(_Id), nick(_nick), skin(c, w), health(100), state(PS_happy), fish(0), world(nullptr)
 {
     cout << "Player was created(" << Id << ", " << nick << ", " << (int) skin.getColor()
         << ", " << (int) skin.getWidth() << ", " << health << ", " << state << ")" << endl;
@@ -51,20 +49,6 @@ void Player::showPlayerStatus() const
         cout << "    World: " << world->getName() << endl;
     }
 } 
-
-void Player::setXY(float pos_x, float pos_y)
-{
-    x = pos_x;
-    y = pos_y;
-}
-
-void Player::getXY(float & pos_x, float & pos_y) const
-{
-    pos_x = x;
-    pos_y = y;
-    //pos_x = rand() % ((int)World::getMaxMapSize());
-    //pos_y = rand() % ((int)World::getMaxMapSize());
-}
 
 void Player::load(std::ifstream &f, std::list<class World *> &list_worlds)
 {

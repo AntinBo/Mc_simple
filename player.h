@@ -7,10 +7,11 @@
 #include <list>
 
 #include "skin.h"
+#include "world_objects.h"
 
 class World;
 
-class Player
+class Player : public WorldObject
 { 
     public:
         enum State
@@ -32,9 +33,6 @@ class Player
 
         void showPlayerStatus() const;
 
-        void setXY(float pos_x, float pos_y);
-        void getXY(float & pos_x, float & pos_y) const;
-
         void load(std::ifstream &f, std::list<class World *> & list_worlds);
         void save(std::ofstream &f) const;
 
@@ -50,7 +48,6 @@ class Player
         unsigned int health; /* health */               
         State        state;  /* emotion */
         int          fish;   /* amount of catched fish */        
-        float        x, y;   /* player's cordinats */
         class World *world;                
 };
 

@@ -12,7 +12,8 @@ using namespace std;
 
 World::World()
 {
-
+    fish[0] = new Tuna();
+    fish[1] = new Carp();
 }
 
 World::World(string n, Type t)
@@ -21,6 +22,9 @@ World::World(string n, Type t)
     type = t;
 
     cout << "World was created(" << name << ", " << type << ")" << endl;
+
+    fish[0] = new Tuna();
+    fish[1] = new Carp();
 }
 
 World::~World()
@@ -48,6 +52,7 @@ void World::showWorldStatus() const
 
 void World::showMap() const
 {
+    int index;
     float x, y;
     bool empty_cell;
     float cur_x, cur_y;
@@ -63,20 +68,14 @@ void World::showMap() const
 
             empty_cell = true;
 
-            // Search Tuna in position X, Y
-            myLunch.getXY(x, y);
-            if (cur_x == x && cur_y == y)
+            for (index = 0; index < FISH_COUNT; index++)
             {
-                cout << " T ";
-                empty_cell = false;
-            }
-
-            // Search Carp in position X, Y
-            myDinner.getXY(x, y);
-            if (cur_x == x && cur_y == y)
-            {
-                cout << " C ";
-                empty_cell = false;
+                fish[index]->getXY(x, y);
+                if (cur_x == x && cur_y == y)
+                {
+                    cout << fish[index]->getTypeName();
+                    empty_cell = false;
+                }
             }
 
             // Search players in position X, Y
@@ -152,6 +151,7 @@ bool World::loadPlayer(class Player *p_new, class Player *p_old)
 
 void World::load(std::ifstream & f)
 {   
+    int index;
     int length;
     char c_name[128];
     class Player *p;
@@ -173,15 +173,13 @@ void World::load(std::ifstream & f)
         players.push_back(p);
     }
 
-    // Tuna 
-    myLunch.load(f);
-
-    // Carp
-    myDinner.load(f);
+    for (index = 0; index < FISH_COUNT; index++)
+        fish[index]->load(f);
 }
 
 void World::save(std::ofstream & f) const
 {
+    int index;
     int length;
 
     // Name
@@ -201,21 +199,18 @@ void World::save(std::ofstream & f) const
         f.write((const char *)&p, sizeof(p));
     }
 
-    // Tuna
-    myLunch.save(f);
-
-    // Carp
-    myDinner.save(f);
+    for (index = 0; index < FISH_COUNT; index++)
+        fish[index]->save(f);
 }
 
 void World::setTunaXY(float pos_x, float pos_y)
 {
-    myLunch.setXY(pos_x, pos_y);
+    fish[0]->setXY(pos_x, pos_y);
 }
 // void getTunaXY(float &pos_x, float &pos_y) const
 void World::setCarpXY(float pos_x, float pos_y)
 {
-    myDinner.setXY(pos_x, pos_y);
+    fish[1]->setXY(pos_x, pos_y);
 }
 // void getCarpXY(float &pos_x, float &pos_y) const
 
@@ -234,8 +229,8 @@ void World::playRound()
     cur_y_carp = rand() % ((int)World::getMaxMapSize());
     setCarpXY(cur_x_carp, cur_y_carp);
 
-    myLunch.getXY(cur_x_tuna, cur_y_tuna);
-    myDinner.getXY(cur_x_carp, cur_y_carp);
+    fish[0]->getXY(cur_x_tuna, cur_y_tuna);
+    fish[1]->getXY(cur_x_carp, cur_y_carp);
 
     // Reckon of points to player
     for (class Player *p : players)
