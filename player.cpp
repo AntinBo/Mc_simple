@@ -4,15 +4,15 @@
 #include "player.h"
 #include "world.h"
 
-#define PLAYER_TYPE_NAME " * "
-
 using namespace std;
 
-Player::Player() : WorldObject(PLAYER_TYPE_NAME)
+const std::string typeNamePlayer = " * ";
+
+Player::Player()
 {
 }
 
-Player::Player(unsigned int _Id, const string &_nick, Skin::Colors c, Skin::Width w) : WorldObject(PLAYER_TYPE_NAME),
+Player::Player(unsigned int _Id, const string &_nick, Skin::Colors c, Skin::Width w) :
     Id(_Id), nick(_nick), skin(c, w), health(100), state(PS_happy), fish(0), world(nullptr)
 {
     cout << "Player was created(" << Id << ", " << nick << ", " << (int) skin.getColor()
@@ -143,4 +143,9 @@ void Player::fishHasCatched()
 void Player::showFish()
 {
     cout << "f: " << fish << endl;
+}
+
+const std::string & Player::getTypeName() const
+{
+    return typeNamePlayer;
 }

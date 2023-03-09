@@ -3,11 +3,17 @@
 
 #include "world_objects.h"
 
+const std::string typeNameTuna = " T ";
+const std::string typeNameCarp = " C ";
+
 /* ---------- class WorldObject ---------- */
-    
-WorldObject::WorldObject(const std::string &tn) : x(0.0), y(0.0)
+
+WorldObject::WorldObject() : x(0.0), y(0.0)
 {
-    type_name = tn;
+}
+
+WorldObject::~WorldObject()
+{
 }
 
 void WorldObject::setXY(float pos_x, float pos_y)
@@ -21,14 +27,9 @@ void WorldObject::getXY(float &pos_x, float &pos_y) const
     pos_y = y;
 }
 
-const std::string &WorldObject::getTypeName() const
-{
-    return type_name;
-}
-
 /* ---------- class Fish ---------- */
 
-Fish::Fish(const std::string &tn) : WorldObject(tn)
+Fish::Fish()
 {
 }
 
@@ -46,12 +47,22 @@ void Fish::save(std::ofstream &f) const
 
 /* ---------- class Tuna ---------- */
 
-Tuna::Tuna() : Fish(" T ")
+Tuna::Tuna()
 {
+}
+
+const std::string & Tuna::getTypeName() const
+{
+    return typeNameTuna;
 }
 
 /* ---------- class Carp ---------- */
 
-Carp::Carp() : Fish(" C ")
+Carp::Carp()
 {  
+}
+
+const std::string & Carp::getTypeName() const
+{
+    return typeNameCarp;
 }

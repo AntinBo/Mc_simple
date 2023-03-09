@@ -39,10 +39,12 @@ class Player : public WorldObject
         void fishHasCatched();
         void showFish();
 
+        virtual const std::string &getTypeName() const;
+
     protected:
 
-    private:
-        unsigned int Id;     /* uniq identificator */ 
+    private: 
+        unsigned int Id; /* uniq identificator */
         std::string  nick;   /* nickname */
         class Skin   skin;   /* skin */       
         unsigned int health; /* health */               
