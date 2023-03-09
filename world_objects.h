@@ -8,13 +8,16 @@
 class WorldObject
 {
     public:
-        WorldObject();
+        WorldObject(const std::string &tn);
 
         void setXY(float pos_x, float pos_y);
         void getXY(float &pos_x, float &pos_y) const;
 
+        const std::string &getTypeName() const;
+
     protected:
         float x, y;
+        std::string type_name;
 
     private:
 };
@@ -22,17 +25,13 @@ class WorldObject
 class Fish : public WorldObject
 {
     public:
-        Fish(const std::string & tn);
-
-        const std::string &getTypeName() const;
+        Fish(const std::string &tn);
 
         void load(std::ifstream &f);
         void save(std::ofstream &f) const;
 
     protected:
-
     private:
-        std::string type_name;
 };
 
 class Tuna: public Fish

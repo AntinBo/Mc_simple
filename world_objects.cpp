@@ -5,8 +5,9 @@
 
 /* ---------- class WorldObject ---------- */
     
-WorldObject::WorldObject() : x(0.0), y(0.0)
+WorldObject::WorldObject(const std::string &tn) : x(0.0), y(0.0)
 {
+    type_name = tn;
 }
 
 void WorldObject::setXY(float pos_x, float pos_y)
@@ -20,16 +21,15 @@ void WorldObject::getXY(float &pos_x, float &pos_y) const
     pos_y = y;
 }
 
-/* ---------- class Fish ---------- */
-
-Fish::Fish(const std::string &tn)
-{
-    type_name = tn;
-}
-
-const std::string &Fish::getTypeName() const
+const std::string &WorldObject::getTypeName() const
 {
     return type_name;
+}
+
+/* ---------- class Fish ---------- */
+
+Fish::Fish(const std::string &tn) : WorldObject(tn)
+{
 }
 
 void Fish::load(std::ifstream &f)

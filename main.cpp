@@ -403,7 +403,7 @@ int main()
                                 break;
                             }
 
-                            for (index = 0; index < 1000; index++)
+                            for (index = 0; index < 43; index++)
                             {
                                 cur_world->playRound();
                             }

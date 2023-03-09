@@ -86,7 +86,7 @@ void World::showMap() const
                 {
                     if (empty_cell)
                     {
-                        cout << " * ";
+                        cout << p->getTypeName();
                         empty_cell = false;
                     }
                 }
