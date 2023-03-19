@@ -15,18 +15,21 @@ class Fisherman;
 class Location
 {
     public:
-        enum Type
+        enum LocationType
         {
-            WT_normal,
-            WT_extended,
-            WT_one_biom
+            LT_Lake = 0,
+            LT_River,
+            LT_Sea,
+            
+            LT_Count
         };
 
         Location();
-        Location(std::string n, Type t);
+        Location(std::string n, LocationType t);
         ~Location();
 
         const std::string & getName() const;
+        const char * getLocationType() const;
 
         bool joinFisherman(class Fisherman *p);
         bool disjoinFisherman(class Fisherman *p);
@@ -51,7 +54,7 @@ class Location
 
     private:
         std::string name;
-        Type type;
+        LocationType type;
         std::list<class Fisherman *> fishermen;
         Fish * fish[FISH_COUNT];
 };

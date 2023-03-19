@@ -204,200 +204,200 @@ int main()
                     user_input = getValueInt(CW_MenuLocationCreate_E, CW_MenuLocationExit_E);
                     switch (user_input)
                     {
-                    case CW_MenuLocationCreate_E:
-                    {
-                        string name;
-                        class Location *cur_location;
-
-                        cout << "Menu->Location->Create: input name and type" << endl;
-                        cin >> name >> type;
-
-                        // Check that Location with this name doesn`t exsist
-                        cur_location = searchLocationByName(name);
-                        if (cur_location != nullptr)
+                        case CW_MenuLocationCreate_E:
                         {
-                            cout << "Can`t create new Location with this name" << endl;
-                            break;
-                        }
+                            string name;
+                            class Location *cur_location;
 
-                        // Creating new Location
-                        cur_location = new Location(name, (Location::Type)type);
-                        list_Locations.push_back(cur_location);
-                            
-                                } break;
+                            cout << "Menu->Location->Create: input name and type[1 - lake, 2 - river, 3 - sea]" << endl;
+                            cin >> name >> type;
 
-                                case CW_MenuLocationDelete_E:
-                                {   
-                                    string name;
-                                    class Location *cur_Location;
-
-                                    cout << "Menu->Location->Delete: input Location name" << endl;
-                                    cin >> name;
-
-                                    // Check that Location with this name exsist
-                                    cur_Location = searchLocationByName(name);   
-                                    if (cur_Location == nullptr)
-                                    {
-                                        cout << "Can`t delete Location with this name" << endl;
-                                        break;
-                                    }
-
-                                    // Deleting Location
-                                    list_Locations.remove(cur_Location);
-                                    delete cur_Location;
-
-                                } break;
-
-                                case CW_MenuLocationPrintAllLocations_E:
-                                {
-                                    n = 1;
-                                    for (class Location *w : list_Locations)
-                                        cout << n++ << ". " << w->getName() << endl;
-
-                                } break;
-
-                                case CW_MenuLocationShowStatus_E:
-                                {
-                                    string name;
-                                    class Location *cur_location;
-
-                                    cout << "Menu->Location->ShowStatus: input name" << endl;
-                                    cin >> name;
-
-                                    // Check that Location with this name exsist
-                                    cur_location = searchLocationByName(name);   
-                                    if (cur_location == nullptr)
-                                    {                               
-                                        cout << "Location with this name doesn`t exist" << endl;
-                                        break;
-                                    }
-
-                                    // Show Location status
-                                    cur_location->showLocationStatus();
-
-                                } break;
-
-                                case CW_MenuLocationJoinFisherman_E:
-                                {
-                                    bool add;
-                                    string name;
-                                    string nick;
-                                    class Location *cur_location;
-                                    class Fisherman *cur_fisherman;
-
-                                    cout << "Menu->Location->JoinFisherman: input Location name" << endl;
-                                    cin >> name;
-
-                                    // Check that Location with this name exsist
-                                    cur_location = searchLocationByName(name);   
-                                    if (cur_location == nullptr)
-                                    {
-                                        cout << "Location with this name doesn`t exist" << endl;
-                                        break;
-                                    }
-
-                                    cout << "Menu->Location->JoinFisherman: input fisherman nick" << endl;
-                                    cin >> nick;
-
-                                    // Check that Fisherman with this nick exsist
-                                    cur_fisherman = searchFishermanByNick(nick);
-                                    if (cur_fisherman == nullptr)
-                                    {
-                                        cout << "Fisherman with this nick doesn`t exist" << endl;
-                                        break;
-                                    }
-
-                                    // Add Fisherman to Location
-                                    if (cur_location != nullptr && cur_fisherman != nullptr)
-                                    {
-                                        add = cur_location->joinFisherman(cur_fisherman);
-
-                                        if (add == false)
-                                        {
-                                            cout << "Fisherman with this name already has added!" << endl;
-                                        }
-                                    }
-
-                                } break;
-
-                                case CW_MenuLocationDisjoinFisherman_E:
-                                {
-                                    string name;
-                                    string nick;
-                                    class Location *cur_Location;
-                                    class Fisherman *cur_fisherman;
-
-                                    cout << "Menu->Location->FishermanDelete: input Location name" << endl;
-                                    cin >> name;
-
-                                    // Check that Location with this name exsist
-                                    cur_Location = searchLocationByName(name);   
-                                    if (cur_Location == nullptr)
-                                    {
-                                        cout << "Location with this name doesn`t exist" << endl;
-                                        break;
-                                    }
-
-                                    cout << "Menu->Location->FishermanDelete: input fisherman nick" << endl;
-                                    cin >> nick;
-
-                                    cur_fisherman = searchFishermanByNick(nick);
-                                    if (cur_fisherman == nullptr)
-                                    {
-                                        cout << "Fisherman with this nick doesn`t exist" << endl;
-                                        break;
-                                    }
-
-                                    // Delete Fisherman from Location
-                                    if (cur_Location != nullptr && cur_fisherman != nullptr)
-                                    {
-                                        cur_Location->disjoinFisherman(cur_fisherman);
-                                        cur_fisherman->setLocation(nullptr);
-                                    }
-                                } break;
-
-                                case CW_MenuLocationShowMap_E:
-                                {
-                                    string name;
-                                    class Location *cur_Location;
-
-                                    cout << "Menu->Location->ShowMap: input Location name" << endl;
-                                    cin >> name;
-
-                                    // Check that Location with this name exsist
-                                    cur_Location = searchLocationByName(name);
-                                    if (cur_Location == nullptr)
-                                    {
-                                        cout << "Location with this name doesn`t exist" << endl;
-                                        break;
-                                    }
-
-                                    cur_Location->showMap();
-                                } break;
-
-                                case CW_MenuLocationPlayRound_E:
-                                {
-                                    string name;
-                                    class Location *cur_Location;
-                                    int index;
-
-                                    cout << "Menu->Location->PlayRound: input Location name" << endl;
-                                    cin >> name;
-
-                                    // Check that Location with this name exsist
-                                    cur_Location = searchLocationByName(name);
-                                    if (cur_Location == nullptr)
-                                    {
-                                        cout << "Location with this name doesn`t exist" << endl;
-                                        break;
-                                    }
-
-                                    for (index = 0; index < 43; index++)
-                                    {
-                                        cur_Location->playRound();
-                                    }
-                                } break;
+                            // Check that Location with this name doesn`t exsist
+                            cur_location = searchLocationByName(name);
+                            if (cur_location != nullptr)
+                            {
+                                cout << "Can`t create new Location with this name" << endl;
+                                break;
                             }
+
+                            // Creating new Location
+                            cur_location = new Location(name, (Location::LocationType)type);
+                            list_Locations.push_back(cur_location);
+                            
+                        } break;
+
+                        case CW_MenuLocationDelete_E:
+                        {   
+                            string name;
+                            class Location *cur_Location;
+
+                            cout << "Menu->Location->Delete: input Location name" << endl;
+                            cin >> name;
+
+                            // Check that Location with this name exsist
+                            cur_Location = searchLocationByName(name);   
+                            if (cur_Location == nullptr)
+                            {
+                                cout << "Can`t delete Location with this name" << endl;
+                                break;
+                            }
+
+                            // Deleting Location
+                            list_Locations.remove(cur_Location);
+                            delete cur_Location;
+
+                        } break;
+
+                        case CW_MenuLocationPrintAllLocations_E:
+                        {
+                            n = 1;
+                            for (class Location *w : list_Locations)
+                                cout << n++ << ". " << w->getName() << endl;
+
+                        } break;
+
+                        case CW_MenuLocationShowStatus_E:
+                        {
+                            string name;
+                            class Location *cur_location;
+
+                            cout << "Menu->Location->ShowStatus: input name" << endl;
+                            cin >> name;
+
+                            // Check that Location with this name exsist
+                            cur_location = searchLocationByName(name);   
+                            if (cur_location == nullptr)
+                            {                               
+                                cout << "Location with this name doesn`t exist" << endl;
+                                break;
+                            }
+
+                            // Show Location status
+                            cur_location->showLocationStatus();
+
+                        } break;
+
+                        case CW_MenuLocationJoinFisherman_E:
+                        {
+                            bool add;
+                            string name;
+                            string nick;
+                            class Location *cur_location;
+                            class Fisherman *cur_fisherman;
+
+                            cout << "Menu->Location->JoinFisherman: input Location name" << endl;
+                            cin >> name;
+
+                            // Check that Location with this name exsist
+                            cur_location = searchLocationByName(name);   
+                            if (cur_location == nullptr)
+                            {
+                                cout << "Location with this name doesn`t exist" << endl;
+                                break;
+                            }
+
+                            cout << "Menu->Location->JoinFisherman: input fisherman nick" << endl;
+                            cin >> nick;
+
+                            // Check that Fisherman with this nick exsist
+                            cur_fisherman = searchFishermanByNick(nick);
+                            if (cur_fisherman == nullptr)
+                            {
+                                cout << "Fisherman with this nick doesn`t exist" << endl;
+                                break;
+                            }
+
+                            // Add Fisherman to Location
+                            if (cur_location != nullptr && cur_fisherman != nullptr)
+                            {
+                                add = cur_location->joinFisherman(cur_fisherman);
+
+                                if (add == false)
+                                {
+                                    cout << "Fisherman with this name already has added!" << endl;
+                                }
+                            }
+
+                        } break;
+
+                        case CW_MenuLocationDisjoinFisherman_E:
+                        {
+                            string name;
+                            string nick;
+                            class Location *cur_Location;
+                            class Fisherman *cur_fisherman;
+
+                            cout << "Menu->Location->FishermanDelete: input Location name" << endl;
+                            cin >> name;
+
+                            // Check that Location with this name exsist
+                            cur_Location = searchLocationByName(name);   
+                            if (cur_Location == nullptr)
+                            {
+                                cout << "Location with this name doesn`t exist" << endl;
+                                break;
+                            }
+
+                            cout << "Menu->Location->FishermanDelete: input fisherman nick" << endl;
+                            cin >> nick;
+
+                            cur_fisherman = searchFishermanByNick(nick);
+                            if (cur_fisherman == nullptr)
+                            {
+                                cout << "Fisherman with this nick doesn`t exist" << endl;
+                                break;
+                            }
+
+                            // Delete Fisherman from Location
+                            if (cur_Location != nullptr && cur_fisherman != nullptr)
+                            {
+                                cur_Location->disjoinFisherman(cur_fisherman);
+                                cur_fisherman->setLocation(nullptr);
+                            }
+                        } break;
+
+                        case CW_MenuLocationShowMap_E:
+                        {
+                            string name;
+                            class Location *cur_Location;
+
+                            cout << "Menu->Location->ShowMap: input Location name" << endl;
+                            cin >> name;
+
+                            // Check that Location with this name exsist
+                            cur_Location = searchLocationByName(name);
+                            if (cur_Location == nullptr)
+                            {
+                                cout << "Location with this name doesn`t exist" << endl;
+                                break;
+                            }
+
+                            cur_Location->showMap();
+                        } break;
+
+                        case CW_MenuLocationPlayRound_E:
+                        {
+                            string name;
+                            class Location *cur_Location;
+                            int index;
+
+                            cout << "Menu->Location->PlayRound: input Location name" << endl;
+                            cin >> name;
+
+                            // Check that Location with this name exsist
+                            cur_Location = searchLocationByName(name);
+                            if (cur_Location == nullptr)
+                            {
+                                cout << "Location with this name doesn`t exist" << endl;
+                                break;
+                            }
+
+                            for (index = 0; index < 43; index++)
+                            {
+                                cur_Location->playRound();
+                            }
+                        } break;
+                    }
                 } break;
 
                 // Fisherman

@@ -10,18 +10,29 @@
 
 using namespace std;
 
+const char * location_type[] = 
+{
+    "Lake",
+    "River",
+    "Sea"
+};
+
 Location::Location()
 {
     fish[0] = new Tuna();
     fish[1] = new Carp();
 }
 
-Location::Location(string n, Type t)
+Location::Location(string n, LocationType t)
 {
     name = n;
-    type = t;
 
-    cout << "Location was created(" << name << ", " << type << ")" << endl;
+    if (type >= LT_Count)
+        type = LT_Lake;
+    else
+        type = t;
+
+    cout << "Location was created(" << name << ", type: " << getLocationType() << ")" << endl;
 
     fish[0] = new Tuna();
     fish[1] = new Carp();
@@ -34,14 +45,24 @@ Location::~Location()
         p->setLocation(nullptr);
     }
 
-    cout << "Location was deleted(" << name << ", " << type << ")" << endl;
+    cout << "Location was deleted(" << name << ", " << getLocationType() << ")" << endl;
+}
+
+const string &Location::getName() const
+{
+    return name;
+}
+
+const char * Location::getLocationType() const
+{
+    return location_type[type - 1];
 }
 
 void Location::showLocationStatus() const
 {
     int n = 1;
 
-    cout << "Location(" << name << ", " << type << ")" << endl;
+    cout << "Location(" << name << ", type: " << getLocationType() << ")" << endl;
     cout << "  Fishermen:" << endl;
     cout << "  --------" << endl;
     for (class Fisherman *p : fishermen)
@@ -57,7 +78,7 @@ void Location::showMap() const
     bool empty_cell;
     float cur_x, cur_y;
 
-    cout << "Location(" << name << ", " << type << ")" << endl;
+    cout << "Location(" << name << ", type: " << getLocationType() << ")" << endl;
     cout << "+ 0  1  2  3  4  5  6  7  8  9 +" << endl;
     for (cur_y = 0; cur_y < LOCATION_MAP_SIZE; cur_y++)
     {
@@ -104,11 +125,6 @@ void Location::showMap() const
 float Location::getMaxMapSize()
 {
     return LOCATION_MAP_SIZE;
-}
-
-const string & Location::getName() const
-{
-    return name;
 }
 
 bool Location::joinFisherman(class Fisherman *p)
