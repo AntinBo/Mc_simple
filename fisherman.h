@@ -1,6 +1,6 @@
 
-#ifndef PLAYER_H
-#define PLAYER_H
+#ifndef FISHERMAN_H
+#define FISHERMAN_H
 
 #include <string>
 #include <fstream>
@@ -11,7 +11,7 @@
 
 class World;
 
-class Player : public WorldObject
+class Fisherman : public WorldObject
 { 
     public:
         enum State
@@ -22,16 +22,16 @@ class Player : public WorldObject
             PS_none
         };
 
-        Player();
-        Player(unsigned int I, const std::string & n, Skin::Colors c, Skin::Width w);
-        ~Player();
+        Fisherman();
+        Fisherman(unsigned int I, const std::string &n, Skin::Colors c, Skin::Width w);
+        ~Fisherman();
 
         const std::string & getNick() const;
         
         void setWorld(class World *w);
         class World *getWorld();
 
-        void showPlayerStatus() const;
+        void showFishermanStatus() const;
 
         void load(std::ifstream &f, std::list<class World *> & list_worlds);
         void save(std::ofstream &f) const;
@@ -53,4 +53,4 @@ class Player : public WorldObject
         class World *world;                
 };
 
-#endif /* PLAYER_H */
+#endif /* FISHERMAN_H */

@@ -4,7 +4,7 @@
 #include <list>
 
 //#include "skin.h"
-#include "player.h"
+#include "fisherman.h"
 #include "world.h"
 
 using namespace std;
@@ -19,7 +19,7 @@ class World
 class Skin 
     params: color, width
 
-class Player
+class Fisherman
     params: Id, nick, skin, health, state
 */
 /***********************************************************/
@@ -27,7 +27,7 @@ class Player
 // Change "world" to "list_worlds"
 // Global variables
 std::list<class World*> list_worlds;
-std::list<class Player*> list_players;
+std::list<class Fisherman*> list_fishermen;
 /***********************************************************/
 
 class World *searchWorldByName(const string & name)
@@ -46,25 +46,25 @@ class World *searchWorldByName(const string & name)
     return cur_world;
 }
 
-class Player *searchPlayerByNick(const string & nick)
+class Fisherman *searchFishermanByNick(const string &nick)
 {
-    class Player *cur_player = nullptr;
+    class Fisherman *cur_fisherman = nullptr;
 
     /*
-    cout << menu_name << " choose player by nick" << endl;
+    cout << menu_name << " choose Fisherman by nick" << endl;
     cin >> nick;
     */
 
-    for (class Player *p : list_players)
+    for (class Fisherman *p : list_fishermen)
     {
         if (p->getNick() == nick)
         {
-            cur_player = p;
+            cur_fisherman = p;
             break;
         }
-    }                            
+    }
 
-    return cur_player;
+    return cur_fisherman;
 }
 
 int getValueInt(int diapason_1, int diapason_2)
@@ -148,8 +148,8 @@ int main()
     string nick;
     int color;
     int width;
-    const char *menu = "Menu: 1 - World, 2 - Player, 3 - Load, 4 - Save, 5 - Help, 6 - Exit";
-    string file_name = "Minecraft-01.bin";
+    const char *menu = "Menu: 1 - World, 2 - Fisherman, 3 - Load, 4 - Save, 5 - Help, 6 - Exit";
+    string file_name = "fisherman-01.bin";
     int n;
     int size;
     int end_marker;
@@ -157,7 +157,7 @@ int main()
     enum CommandMain
     {
         CN_MenuWorld_E = 1,
-        CN_MenuPlayer_E,
+        CN_MenuFisherman_E,
         CN_MenuLoad_E,
         CN_MenuSave_E,
         CN_MenuHelp_E,
@@ -170,35 +170,24 @@ int main()
         CW_MenuWorldDelete_E,
         CW_MenuWorldPrintAllWorlds_E,
         CW_MenuWorldShowStatus_E,
-        CW_MenuWorldJoinPlayer_E,
-        CW_MenuWorldDisjoinPlayer_E,
+        CW_MenuWorldJoinFisherman_E,
+        CW_MenuWorldDisjoinFisherman_E,
         CW_MenuWorldShowMap_E,
         CW_MenuWorldPlayRound_E,
         CW_MenuWorldExit_E
     };
 
-    enum CommandPlayer
+    enum CommandFisherman
     {
-        CP_MenuPlayerCreate_E = 1,
-        CP_MenuPlayerDelete_E,
-        CP_MenuPlayerPrintAllPlayers_E,
-        CP_MenuPlayerShowStatus_E,
-        CP_MenuPlayerSetPosition_E,
-        CP_MenuPlayerExit_E
+        CP_MenuFishermanCreate_E = 1,
+        CP_MenuFishermanDelete_E,
+        CP_MenuFishermanPrintAllFishermen_E,
+        CP_MenuFishermanShowStatus_E,
+        CP_MenuFishermanSetPosition_E,
+        CP_MenuFishermanExit_E
     };
 
-    /* 
-    Menu-> 1 World->  1.1 Create 
-                      1.2 Delete
-                      1.3 Show all
-           2 Player-> 2.1 Create
-                      2.2 Delete
-                      2.3 Show all
-           3 Help         
-           4 Exit
-    */
-
-        cout << menu << endl;
+    cout << menu << endl;
 
     while (run)
     {
@@ -211,310 +200,309 @@ int main()
                 case CN_MenuWorld_E:
                 {
                     cout << "Menu->World: 1 - Create, 2 - Delete, 3 - PrintAllWorlds, 4 - ShowStatus,"
-                            " 5 - JoinPlayer, 6 - DisjoinPlayer, 7 - ShowMap, 8 - PlayRound, 9 - Exit" << endl;
+                            " 5 - JoinFisherman, 6 - DisjoinFisherman, 7 - ShowMap, 8 - PlayRound, 9 - Exit" << endl;
                     user_input = getValueInt(CW_MenuWorldCreate_E, CW_MenuWorldExit_E);
                     switch (user_input)
                     {
-                        case CW_MenuWorldCreate_E:
+                    case CW_MenuWorldCreate_E:
+                    {
+                        string name;
+                        class World *cur_world;
+
+                        cout << "Menu->World->Create: input name and type" << endl;
+                        cin >> name >> type;
+
+                        // Check that World with this name doesn`t exsist
+                        cur_world = searchWorldByName(name);
+                        if (cur_world != nullptr)
                         {
-                            string name;
-                            class World *cur_world;
+                            cout << "Can`t create new World with this name" << endl;
+                            break;
+                        }
 
-                            cout << "Menu->World->Create: input name and type" << endl;
-                            cin >> name >> type;
-
-                            // Check that World with this name doesn`t exsist
-                            cur_world = searchWorldByName(name);   
-                            if (cur_world != nullptr)
-                            {
-                                cout << "Can`t create new World with this name" << endl;
-                                break;
-                            }
-
-                            // Creating new World
-                            cur_world = new World(name, (World::Type)type);
-                            list_worlds.push_back(cur_world);
-                    
-                        } break;
-
-                        case CW_MenuWorldDelete_E:
-                        {   
-                            string name;
-                            class World *cur_world;
-
-                            cout << "Menu->World->Delete: input world name" << endl;
-                            cin >> name;
-
-                            // Check that World with this name exsist
-                            cur_world = searchWorldByName(name);   
-                            if (cur_world == nullptr)
-                            {
-                                cout << "Can`t delete World with this name" << endl;
-                                break;
-                            }
-
-                            // Deleting World
-                            list_worlds.remove(cur_world);
-                            delete cur_world;
-
-                        } break;
-
-                        case CW_MenuWorldPrintAllWorlds_E:
-                        {
-                            n = 1;
-                            for (class World *w : list_worlds)
-                                cout << n++ << ". " << w->getName() << endl;
-
-                        } break;
-
-                        case CW_MenuWorldShowStatus_E:
-                        {
-                            string name;
-                            class World *cur_world;
-
-                            cout << "Menu->World->ShowStatus: input name" << endl;
-                            cin >> name;
-
-                            // Check that World with this name exsist
-                            cur_world = searchWorldByName(name);   
-                            if (cur_world == nullptr)
-                            {                               
-                                cout << "World with this name doesn`t exist" << endl;
-                                break;
-                            }
-
-                            // Show World status
-                            cur_world->showWorldStatus();
-
-                        } break;
-
-                        case CW_MenuWorldJoinPlayer_E:
-                        {
-                            bool add;
-                            string name;
-                            string nick;
-                            class World *cur_world;
-                            class Player *cur_player;
-
-                            cout << "Menu->World->JoinPlayer: input world name" << endl;
-                            cin >> name;
-
-                            // Check that World with this name exsist
-                            cur_world = searchWorldByName(name);   
-                            if (cur_world == nullptr)
-                            {
-                                cout << "World with this name doesn`t exist" << endl;
-                                break;
-                            }   
-
-                            cout << "Menu->World->JoinPlayer: input player nick" << endl;
-                            cin >> nick;
-
-                            // Check that Player with this nick exsist
-                            cur_player = searchPlayerByNick(nick);
-                            if (cur_player == nullptr)
-                            {
-                                cout << "Player with this nick doesn`t exist" << endl;
-                                break;
-                            }
-                                
-                            // Add Player to World
-                            if (cur_world != nullptr && cur_player != nullptr)
-                            {
-                                add = cur_world->joinPlayer(cur_player);
-
-                                if (add == false)
-                                {
-                                    cout << "Player with this name already has added!" << endl;
-                                }
-                            }
-
-                        } break;
-
-                        case CW_MenuWorldDisjoinPlayer_E:
-                        {
-                            string name;
-                            string nick;
-                            class World *cur_world;                                
-                            class Player *cur_player;
-
-                            cout << "Menu->World->PlayerDelete: input world name" << endl;
-                            cin >> name;
-
-                            // Check that World with this name exsist
-                            cur_world = searchWorldByName(name);   
-                            if (cur_world == nullptr)
-                            {
-                                cout << "World with this name doesn`t exist" << endl;
-                                break;
-                            }
-
-                            cout << "Menu->World->PlayerDelete: input player nick" << endl;
-                            cin >> nick;
+                        // Creating new World
+                        cur_world = new World(name, (World::Type)type);
+                        list_worlds.push_back(cur_world);
                             
-                            cur_player = searchPlayerByNick(nick);
-                            if (cur_player == nullptr)
-                            {
-                                cout << "Player with this nick doesn`t exist" << endl;
-                                break;
+                                } break;
+
+                                case CW_MenuWorldDelete_E:
+                                {   
+                                    string name;
+                                    class World *cur_world;
+
+                                    cout << "Menu->World->Delete: input world name" << endl;
+                                    cin >> name;
+
+                                    // Check that World with this name exsist
+                                    cur_world = searchWorldByName(name);   
+                                    if (cur_world == nullptr)
+                                    {
+                                        cout << "Can`t delete World with this name" << endl;
+                                        break;
+                                    }
+
+                                    // Deleting World
+                                    list_worlds.remove(cur_world);
+                                    delete cur_world;
+
+                                } break;
+
+                                case CW_MenuWorldPrintAllWorlds_E:
+                                {
+                                    n = 1;
+                                    for (class World *w : list_worlds)
+                                        cout << n++ << ". " << w->getName() << endl;
+
+                                } break;
+
+                                case CW_MenuWorldShowStatus_E:
+                                {
+                                    string name;
+                                    class World *cur_world;
+
+                                    cout << "Menu->World->ShowStatus: input name" << endl;
+                                    cin >> name;
+
+                                    // Check that World with this name exsist
+                                    cur_world = searchWorldByName(name);   
+                                    if (cur_world == nullptr)
+                                    {                               
+                                        cout << "World with this name doesn`t exist" << endl;
+                                        break;
+                                    }
+
+                                    // Show World status
+                                    cur_world->showWorldStatus();
+
+                                } break;
+
+                                case CW_MenuWorldJoinFisherman_E:
+                                {
+                                    bool add;
+                                    string name;
+                                    string nick;
+                                    class World *cur_world;
+                                    class Fisherman *cur_fisherman;
+
+                                    cout << "Menu->World->JoinFisherman: input world name" << endl;
+                                    cin >> name;
+
+                                    // Check that World with this name exsist
+                                    cur_world = searchWorldByName(name);   
+                                    if (cur_world == nullptr)
+                                    {
+                                        cout << "World with this name doesn`t exist" << endl;
+                                        break;
+                                    }
+
+                                    cout << "Menu->World->JoinFisherman: input fisherman nick" << endl;
+                                    cin >> nick;
+
+                                    // Check that Fisherman with this nick exsist
+                                    cur_fisherman = searchFishermanByNick(nick);
+                                    if (cur_fisherman == nullptr)
+                                    {
+                                        cout << "Fisherman with this nick doesn`t exist" << endl;
+                                        break;
+                                    }
+
+                                    // Add Fisherman to World
+                                    if (cur_world != nullptr && cur_fisherman != nullptr)
+                                    {
+                                        add = cur_world->joinFisherman(cur_fisherman);
+
+                                        if (add == false)
+                                        {
+                                            cout << "Fisherman with this name already has added!" << endl;
+                                        }
+                                    }
+
+                                } break;
+
+                                case CW_MenuWorldDisjoinFisherman_E:
+                                {
+                                    string name;
+                                    string nick;
+                                    class World *cur_world;
+                                    class Fisherman *cur_fisherman;
+
+                                    cout << "Menu->World->FishermanDelete: input world name" << endl;
+                                    cin >> name;
+
+                                    // Check that World with this name exsist
+                                    cur_world = searchWorldByName(name);   
+                                    if (cur_world == nullptr)
+                                    {
+                                        cout << "World with this name doesn`t exist" << endl;
+                                        break;
+                                    }
+
+                                    cout << "Menu->World->FishermanDelete: input fisherman nick" << endl;
+                                    cin >> nick;
+
+                                    cur_fisherman = searchFishermanByNick(nick);
+                                    if (cur_fisherman == nullptr)
+                                    {
+                                        cout << "Fisherman with this nick doesn`t exist" << endl;
+                                        break;
+                                    }
+
+                                    // Delete Fisherman from World
+                                    if (cur_world != nullptr && cur_fisherman != nullptr)
+                                    {
+                                        cur_world->disjoinFisherman(cur_fisherman);
+                                        cur_fisherman->setWorld(nullptr);
+                                    }
+                                } break;
+
+                                case CW_MenuWorldShowMap_E:
+                                {
+                                    string name;
+                                    class World *cur_world;
+
+                                    cout << "Menu->World->ShowMap: input world name" << endl;
+                                    cin >> name;
+
+                                    // Check that World with this name exsist
+                                    cur_world = searchWorldByName(name);
+                                    if (cur_world == nullptr)
+                                    {
+                                        cout << "World with this name doesn`t exist" << endl;
+                                        break;
+                                    }
+
+                                    cur_world->showMap();
+                                } break;
+
+                                case CW_MenuWorldPlayRound_E:
+                                {
+                                    string name;
+                                    class World *cur_world;
+                                    int index;
+
+                                    cout << "Menu->World->PlayRound: input world name" << endl;
+                                    cin >> name;
+
+                                    // Check that World with this name exsist
+                                    cur_world = searchWorldByName(name);
+                                    if (cur_world == nullptr)
+                                    {
+                                        cout << "World with this name doesn`t exist" << endl;
+                                        break;
+                                    }
+
+                                    for (index = 0; index < 43; index++)
+                                    {
+                                        cur_world->playRound();
+                                    }
+                                } break;
                             }
-
-                            // Delete Player from World
-                            if (cur_world != nullptr && cur_player != nullptr)
-                            {
-                                cur_world->disjoinPlayer(cur_player);
-                                cur_player->setWorld(nullptr);
-                            }
-                        } break;
-
-                        case CW_MenuWorldShowMap_E:
-                        {
-                            string name;
-                            class World *cur_world;
-
-                            cout << "Menu->World->ShowMap: input world name" << endl;
-                            cin >> name;
-
-                            // Check that World with this name exsist
-                            cur_world = searchWorldByName(name);
-                            if (cur_world == nullptr)
-                            {
-                                cout << "World with this name doesn`t exist" << endl;
-                                break;
-                            }
-
-                            cur_world->showMap();
-                        } break;
-
-                        case CW_MenuWorldPlayRound_E:
-                        {
-                            string name;
-                            class World *cur_world;
-                            int index;
-
-                            cout << "Menu->World->PlayRound: input world name" << endl;
-                            cin >> name;
-
-                            // Check that World with this name exsist
-                            cur_world = searchWorldByName(name);
-                            if (cur_world == nullptr)
-                            {
-                                cout << "World with this name doesn`t exist" << endl;
-                                break;
-                            }
-
-                            for (index = 0; index < 43; index++)
-                            {
-                                cur_world->playRound();
-                            }
-                        } break;
-                    }
                 } break;
 
-                // Player
-                case CN_MenuPlayer_E:
+                // Fisherman
+                case CN_MenuFisherman_E:
                 {
-                    cout << "Menu->Player: 1 - Create, 2 - Delete, 3 - PrintAllPlayers, 4 - ShowStatus, 5 - SetPosition, 6 - Exit" << endl;
-                    user_input = getValueInt(CP_MenuPlayerCreate_E, CP_MenuPlayerExit_E);
-                    switch (user_input)
-                    {
-                        case CP_MenuPlayerCreate_E:
-                        {
-                            string nick;
-                            class Player *cur_player;
-
-                            cout << "Menu->Player->Create: input Id, nick, skin's color and width " << endl;
-                            cin >> Id >> nick >> color >> width;
-
-                            // Check that Player with this nick doesn`t exsist
-                            cur_player = searchPlayerByNick(nick);   
-                            if (cur_player != nullptr)
+                            cout << "Menu->Fisherman: 1 - Create, 2 - Delete, 3 - PrintAllFishermen, 4 - ShowStatus, 5 - SetPosition, 6 - Exit" << endl;
+                            user_input = getValueInt(CP_MenuFishermanCreate_E, CP_MenuFishermanExit_E);
+                            switch (user_input)
                             {
-                                cout << "Can`t create new Player with this nick" << endl;
-                                break;
-                            }
-                            
-                            // Creating new Player
-                            cur_player = new Player(Id, nick, (Skin::Colors)color, (Skin::Width)width);      
-                            list_players.push_back(cur_player);                              
+                            case CP_MenuFishermanCreate_E:
+                            {
+                                    string nick;
+                                    class Fisherman *cur_fisherman;
+
+                                    cout << "Menu->Fisherman->Create: input Id, nick, skin's color and width " << endl;
+                                    cin >> Id >> nick >> color >> width;
+
+                                    // Check that Fisherman with this nick doesn`t exsist
+                                    cur_fisherman = searchFishermanByNick(nick);
+                                    if (cur_fisherman != nullptr)
+                                    {
+                                        cout << "Can`t create new Fisherman with this nick" << endl;
+                                        break;
+                                    }
+
+                                    // Creating new Fisherman
+                                    cur_fisherman = new Fisherman(Id, nick, (Skin::Colors)color, (Skin::Width)width);
+                                    list_fishermen.push_back(cur_fisherman);
                         } break;
 
-                        case CP_MenuPlayerDelete_E:
+                        case CP_MenuFishermanDelete_E:
                         {
                             string nick;
-                            class Player *cur_player;
+                            class Fisherman *cur_fisherman;
 
-                            cout << "Menu->Player->Delete: input player`s nick" << endl;
+                            cout << "Menu->Fisherman->Delete: input fisherman`s nick" << endl;
                             cin >> nick;
 
-                            // Check that Player with this nick exsist
-                            cur_player = searchPlayerByNick(nick);   
-                            if (cur_player == nullptr)
+                            // Check that Fisherman with this nick exsist
+                            cur_fisherman = searchFishermanByNick(nick);
+                            if (cur_fisherman == nullptr)
                             {
-                                cout << "Can`t delete Player with this nick" << endl;
+                                cout << "Can`t delete Fisherman with this nick" << endl;
                                 break;
                             }
 
-                            // Deleting player
-                            list_players.remove(cur_player);
-                            delete cur_player;
+                            // Deleting fisherman
+                            list_fishermen.remove(cur_fisherman);
+                            delete cur_fisherman;
 
                         } break;
 
-                        case CP_MenuPlayerPrintAllPlayers_E:
+                        case CP_MenuFishermanPrintAllFishermen_E:
                         {    
                             n = 1;
-                            for (class Player *p : list_players)
+                            for (class Fisherman *p : list_fishermen)
                             {
                                 cout << n++ << ". " << p->getNick() << " - f:";
                                 p->showFish();
                             }
-                        } break; 
+                        } break;
 
-                        case CP_MenuPlayerShowStatus_E:
+                        case CP_MenuFishermanShowStatus_E:
                         {
                             string nick;
-                            class Player *cur_player;
+                            class Fisherman *cur_fisherman;
 
-                            cout << "Menu->Player->ShowStatus: input nick" << endl;
+                            cout << "Menu->Fisherman->ShowStatus: input nick" << endl;
                             cin >> nick;
 
-                            // Check that Player with this nick exsist
-                            cur_player = searchPlayerByNick(nick);   
-                            if (cur_player == nullptr)
-                            {                               
-                                cout << "Player with this nick doesn`t exist" << endl;
+                            // Check that Fisherman with this nick exsist
+                            cur_fisherman = searchFishermanByNick(nick);
+                            if (cur_fisherman == nullptr)
+                            {
+                                cout << "Fisherman with this nick doesn`t exist" << endl;
                                 break;
                             }
 
                             // Show status
-                            cur_player->showPlayerStatus();
-                            
+                            cur_fisherman->showFishermanStatus();
                         } break;
 
-                        case CP_MenuPlayerSetPosition_E:
+                        case CP_MenuFishermanSetPosition_E:
                         {
                             float x, y;
                             string nick;
-                            class Player *cur_player;
+                            class Fisherman *cur_fisherman;
 
-                            cout << "Menu->Player->SetPosition: input player nick" << endl;
+                            cout << "Menu->Fisherman->SetPosition: input fisherman nick" << endl;
                             cin >> nick;
 
-                            // Check that Player with this nick exsist
-                            cur_player = searchPlayerByNick(nick);
-                            if (cur_player == nullptr)
+                            // Check that Fisherman with this nick exsist
+                            cur_fisherman = searchFishermanByNick(nick);
+                            if (cur_fisherman == nullptr)
                             {
-                                cout << "Player with this nick doesn`t exist" << endl;
+                                cout << "Fisherman with this nick doesn`t exist" << endl;
                                 break;
                             }
 
-                            cout << "Input position of player(x, y)" << endl;
+                            cout << "Input position of fisherman(x, y)" << endl;
                             cin >> x >> y;
-                            cur_player->setXY(x, y);
+                            cur_fisherman->setXY(x, y);
                         } break;
 
-                        case CP_MenuPlayerExit_E:
+                        case CP_MenuFishermanExit_E:
                         {
                             cout << "Exit" << endl;
 
@@ -526,16 +514,16 @@ int main()
                 case CN_MenuLoad_E:
                 {
                     std::ifstream file;
-                    class World * cur_world; 
-                    class Player * cur_player;
+                    class World * cur_world;
+                    class Fisherman *cur_fisherman;
 
-                    // Check old objects worlds and players
-                    if (list_worlds.size() != 0 || list_players.size() != 0)
+                    // Check old objects worlds and fishermen
+                    if (list_worlds.size() != 0 || list_fishermen.size() != 0)
                     {
-                        cout << "List of worlds or players aren't empty. Do you want to delete them?[Y/N]" << endl;
+                        cout << "List of worlds or fishermen aren't empty. Do you want to delete them?[Y/N]" << endl;
                         if (getValueYesOrNo())
                         {
-                            // Deletes all worlds and players
+                            // Deletes all worlds and fishermen
                             
                             for (class World *cur_world : list_worlds)
                             {
@@ -544,12 +532,12 @@ int main()
                             }
                             list_worlds.clear();
 
-                            for (class Player *cur_player : list_players)
+                            for (class Fisherman *cur_fisherman : list_fishermen)
                             {
-                                // Deleting Player
-                                delete cur_player;
+                                // Deleting Fisherman
+                                delete cur_fisherman;
                             }
-                            list_players.clear();
+                            list_fishermen.clear();
                         }
                         else 
                         {
@@ -572,15 +560,15 @@ int main()
                             list_worlds.push_back(cur_world);
                         }
 
-                        // 3 - Loading amount of players in the list
+                        // 3 - Loading amount of fishermen in the list
                         file.read((char *)&size, sizeof(size));
 
-                        // 4 - Loading every Player's instance from file
+                        // 4 - Loading every Fisherman's instance from file
                         for (; size > 0; size--)
                         {
-                            cur_player = new Player();
-                            cur_player->load(file, list_worlds);
-                            list_players.push_back(cur_player);
+                            cur_fisherman = new Fisherman();
+                            cur_fisherman->load(file, list_worlds);
+                            list_fishermen.push_back(cur_fisherman);
                         }
 
                         // 5 - Loading the end marker from the file
@@ -622,15 +610,15 @@ int main()
                         for (class World *w : list_worlds)
                         {
                             w->save(file); 
-                        }  
+                        }
 
-                        // 3 - Save amount of players in the list
-                        size = list_players.size();
+                        // 3 - Save amount of fishermen in the list
+                        size = list_fishermen.size();
                          
                         file.write((const char *)&size, sizeof(size));
 
-                        // 4 - Saving every Player's instance to file
-                        for (class Player *p : list_players)
+                        // 4 - Saving every Fisherman's instance to file
+                        for (class Fisherman *p : list_fishermen)
                         {
                             p->save(file);
                         }

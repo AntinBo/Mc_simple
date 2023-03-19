@@ -1,62 +1,61 @@
 
 #include <iostream>
 
-#include "player.h"
+#include "fisherman.h"
 #include "world.h"
 
 using namespace std;
 
-const std::string typeNamePlayer = " * ";
+const std::string typeNameFisherman = " * ";
 
-Player::Player()
+Fisherman::Fisherman()
 {
 }
 
-Player::Player(unsigned int _Id, const string &_nick, Skin::Colors c, Skin::Width w) :
-    Id(_Id), nick(_nick), skin(c, w), health(100), state(PS_happy), fish(0), world(nullptr)
+Fisherman::Fisherman(unsigned int _Id, const string &_nick, Skin::Colors c, Skin::Width w) : Id(_Id), nick(_nick), skin(c, w), health(100), state(PS_happy), fish(0), world(nullptr)
 {
-    cout << "Player was created(" << Id << ", " << nick << ", " << (int) skin.getColor()
-        << ", " << (int) skin.getWidth() << ", " << health << ", " << state << ")" << endl;
+    cout << "Fisherman was created(" << Id << ", " << nick << ", " << (int)skin.getColor()
+         << ", " << (int)skin.getWidth() << ", " << health << ", " << state << ")" << endl;
 }
 
-Player::~Player()
+Fisherman::~Fisherman()
 {
     if (world != nullptr)
     {
-        world->joinPlayer(this);
+        world->joinFisherman(this);
     }
 }
 
-const string & Player::getNick() const
+const string &Fisherman::getNick() const
 {
     return nick;
 }
 
-void Player::setWorld(class World *w)
+void Fisherman::setWorld(class World *w)
 {
     world = w;
 }
 
-class World *Player::getWorld()
+class World *Fisherman::getWorld()
 {
     return world;
 }
 
-void Player::showPlayerStatus() const
+void Fisherman::showFishermanStatus() const
 {
-    cout << "  Player(" << Id << ", " << nick << ", " << (int)skin.getColor()
+    cout << "  Fisherman(" << Id << ", " << nick << ", " << (int)skin.getColor()
          << ", " << (int)skin.getWidth() << ", " << health << ", " << state << ", f: " << fish << ", x: " << x << ", y: " << y << ")" << endl;
     if (world != nullptr)
     {
         cout << "    World: " << world->getName() << endl;
     }
-} 
+}
 
-void Player::load(std::ifstream &f, std::list<class World *> &list_worlds)
+void Fisherman::load(std::ifstream &f, std::list<class World *> &list_worlds)
 {
     int length;
     char c_nick[128];
-    class Player * p;
+    class Fisherman *p;
 
     // 1 - Loadnig Id
     f.read((char *)&Id, sizeof(Id)); // int
@@ -86,8 +85,8 @@ void Player::load(std::ifstream &f, std::list<class World *> &list_worlds)
     // 8 - Loadnig old self-pointer
     f.read((char *)&p, sizeof(p));
     for (class World *w : list_worlds)
-    {   
-        if (w->loadPlayer(this, p))
+    {
+        if (w->loadFisherman(this, p))
         {
             world = w;
             break;
@@ -98,10 +97,10 @@ void Player::load(std::ifstream &f, std::list<class World *> &list_worlds)
     f.read((char *)&fish, sizeof(fish));
 }
 
-void Player::save(std::ofstream &f) const
+void Fisherman::save(std::ofstream &f) const
 {
     int length;
-    const class Player *p;
+    const class Fisherman *p;
 
     // 1 - Saving Id
     f.write((const char *)&Id, sizeof(Id));
@@ -135,17 +134,17 @@ void Player::save(std::ofstream &f) const
     f.write((const char *)&fish, sizeof(fish));
 }
 
-void Player::fishHasCatched()
+void Fisherman::fishHasCatched()
 {
     fish++;
 }
 
-void Player::showFish()
+void Fisherman::showFish()
 {
     cout << "f: " << fish << endl;
 }
 
-const std::string & Player::getTypeName() const
+const std::string &Fisherman::getTypeName() const
 {
-    return typeNamePlayer;
+    return typeNameFisherman;
 }

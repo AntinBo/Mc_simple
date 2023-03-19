@@ -3,7 +3,7 @@
 #include <fstream>
 
 #include "world.h"
-#include "player.h"
+#include "fisherman.h"
 #include "world_objects.h"
 
 #define WORLD_MAP_SIZE 10
@@ -29,7 +29,7 @@ World::World(string n, Type t)
 
 World::~World()
 {
-    for (class Player *p : players)
+    for (class Fisherman *p : fishermen)
     {
         p->setWorld(nullptr);
     }
@@ -42,9 +42,9 @@ void World::showWorldStatus() const
     int n = 1;
 
     cout << "World(" << name << ", " << type << ")" << endl;
-    cout << "  Players:" << endl;
+    cout << "  Fishermen:" << endl;
     cout << "  --------" << endl;
-    for (class Player *p : players)
+    for (class Fisherman *p : fishermen)
     {
         cout << "  " << n++ << ". " << p->getNick() << endl;
     }
@@ -78,8 +78,8 @@ void World::showMap() const
                 }
             }
 
-            // Search players in position X, Y
-            for (class Player *p : players)
+            // Search fisherman's in position X, Y
+            for (class Fisherman *p : fishermen)
             {
                 p->getXY(x, y);
                 if (cur_x == x && cur_y == y)
@@ -111,7 +111,7 @@ const string & World::getName() const
     return name;
 }
 
-bool World::joinPlayer(class Player *p)
+bool World::joinFisherman(class Fisherman *p)
 {
     class World *w;
 
@@ -119,7 +119,7 @@ bool World::joinPlayer(class Player *p)
 
     if (w == nullptr)
     {
-        players.push_back(p); 
+        fishermen.push_back(p);
         p->setWorld(this);
         
         return true;
@@ -128,21 +128,21 @@ bool World::joinPlayer(class Player *p)
     return false;                             
 }
 
-bool World::disjoinPlayer(class Player *p)
+bool World::disjoinFisherman(class Fisherman *p)
 {
-    players.remove(p);    
+    fishermen.remove(p);    
 
     return true;   
 }
 
-bool World::loadPlayer(class Player *p_new, class Player *p_old)
+bool World::loadFisherman(class Fisherman *p_new, class Fisherman *p_old)
 {
-    for (class Player *p : players)
+    for (class Fisherman *p : fishermen)
     {
         if (p == p_old)
         {
-            players.remove(p);
-            players.push_back(p_new);
+            fishermen.remove(p);
+            fishermen.push_back(p_new);
             return true;
         }
     }
@@ -154,7 +154,7 @@ void World::load(std::ifstream & f)
     int index;
     int length;
     char c_name[128];
-    class Player *p;
+    class Fisherman *p;
 
     // Name
     f.read((char *)&length, sizeof(length)); // int
@@ -165,12 +165,12 @@ void World::load(std::ifstream & f)
     // Type
     f.read((char *)&type, sizeof(type));
     
-    // Pointers of players
+    // Pointers of fishermen
     f.read((char *)&length, sizeof(length));
     for (; length > 0; length--)
     {
         f.read((char *)&p, sizeof(p));
-        players.push_back(p);
+        fishermen.push_back(p);
     }
 
     for (index = 0; index < FISH_COUNT; index++)
@@ -190,11 +190,11 @@ void World::save(std::ofstream & f) const
     // Type
     f.write((const char *)&type, sizeof(type));
 
-    // Pointers of players
-    length = players.size();
+    // Pointers of fishermen
+    length = fishermen.size();
     f.write((const char *)&length, sizeof(length));
 
-    for (class Player *p : players)
+    for (class Fisherman *p : fishermen)
     {
         f.write((const char *)&p, sizeof(p));
     }
@@ -232,8 +232,8 @@ void World::playRound()
     fish[0]->getXY(cur_x_tuna, cur_y_tuna);
     fish[1]->getXY(cur_x_carp, cur_y_carp);
 
-    // Reckon of points to player
-    for (class Player *p : players)
+    // Reckon of points to fisherman
+    for (class Fisherman *p : fishermen)
     {
         p->getXY(x, y); 
 

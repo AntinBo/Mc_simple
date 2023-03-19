@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "c:/Projects/Minecraft_simple",
-      "program": "c:/Projects/Minecraft_simple/main.exe",
+      "cwd": "c:/Projects/Fisherman",
+      "program": "c:/Projects/Fisherman/main.exe",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

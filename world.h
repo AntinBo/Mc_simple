@@ -10,7 +10,7 @@
 
 #define FISH_COUNT 2
 
-class Player;
+class Fisherman;
 
 class World
 {
@@ -27,11 +27,11 @@ class World
         ~World();
 
         const std::string & getName() const;
-        
-        bool joinPlayer(class Player *p);
-        bool disjoinPlayer(class Player *p);
 
-        bool loadPlayer(class Player *p_new, class Player *p_old);
+        bool joinFisherman(class Fisherman *p);
+        bool disjoinFisherman(class Fisherman *p);
+
+        bool loadFisherman(class Fisherman *p_new, class Fisherman *p_old);
 
         void showWorldStatus() const;
         void showMap() const;
@@ -52,7 +52,7 @@ class World
     private:
         std::string name;
         Type type;
-        std::list<class Player *> players;
+        std::list<class Fisherman *> fishermen;
         Fish * fish[FISH_COUNT];
 };
 

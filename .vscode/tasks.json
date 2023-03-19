@@ -11,7 +11,7 @@
 				"-Wall",
 				"main.cpp",
 				"skin.cpp",
-				"player.cpp",
+				"fisherman.cpp",
 				"world.cpp",
 				"world_objects.cpp",
 				"-o",
