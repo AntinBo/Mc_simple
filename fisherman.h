@@ -7,11 +7,11 @@
 #include <list>
 
 #include "skin.h"
-#include "world_objects.h"
+#include "location_object.h"
 
-class World;
+class Location;
 
-class Fisherman : public WorldObject
+class Fisherman : public LocationObject
 { 
     public:
         enum State
@@ -28,12 +28,12 @@ class Fisherman : public WorldObject
 
         const std::string & getNick() const;
         
-        void setWorld(class World *w);
-        class World *getWorld();
+        void setLocation(class Location *w);
+        class Location *getLocation();
 
         void showFishermanStatus() const;
 
-        void load(std::ifstream &f, std::list<class World *> & list_worlds);
+        void load(std::ifstream &f, std::list<class Location *> & list_locations);
         void save(std::ofstream &f) const;
 
         void fishHasCatched();
@@ -50,7 +50,7 @@ class Fisherman : public WorldObject
         unsigned int health; /* health */               
         State        state;  /* emotion */
         int          fish;   /* amount of catched fish */        
-        class World *world;                
+        class Location *location;                
 };
 
 #endif /* FISHERMAN_H */

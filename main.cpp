@@ -5,7 +5,7 @@
 
 //#include "skin.h"
 #include "fisherman.h"
-#include "world.h"
+#include "location.h"
 
 using namespace std;
 
@@ -13,7 +13,7 @@ using namespace std;
 
 /*
 
-class World
+class Location
     params: name, type
 
 class Skin 
@@ -24,26 +24,26 @@ class Fisherman
 */
 /***********************************************************/
 
-// Change "world" to "list_worlds"
+// Change "Location" to "list_Locations"
 // Global variables
-std::list<class World*> list_worlds;
+std::list<class Location*> list_Locations;
 std::list<class Fisherman*> list_fishermen;
 /***********************************************************/
 
-class World *searchWorldByName(const string & name)
+class Location *searchLocationByName(const string & name)
 {
-    class World *cur_world = nullptr;
+    class Location *cur_Location = nullptr;
 
-    for (class World *w : list_worlds)
+    for (class Location *w : list_Locations)
     {
         if (w->getName() == name)
         {
-            cur_world = w;
+            cur_Location = w;
             break;      
         }
     }                            
 
-    return cur_world;
+    return cur_Location;
 }
 
 class Fisherman *searchFishermanByNick(const string &nick)
@@ -148,7 +148,7 @@ int main()
     string nick;
     int color;
     int width;
-    const char *menu = "Menu: 1 - World, 2 - Fisherman, 3 - Load, 4 - Save, 5 - Help, 6 - Exit";
+    const char *menu = "Menu: 1 - Location, 2 - Fisherman, 3 - Load, 4 - Save, 5 - Help, 6 - Exit";
     string file_name = "fisherman-01.bin";
     int n;
     int size;
@@ -156,7 +156,7 @@ int main()
 
     enum CommandMain
     {
-        CN_MenuWorld_E = 1,
+        CN_MenuLocation_E = 1,
         CN_MenuFisherman_E,
         CN_MenuLoad_E,
         CN_MenuSave_E,
@@ -164,17 +164,17 @@ int main()
         CN_MenuExit_E
     };
 
-    enum CommandWorld
+    enum CommandLocation
     {
-        CW_MenuWorldCreate_E = 1,
-        CW_MenuWorldDelete_E,
-        CW_MenuWorldPrintAllWorlds_E,
-        CW_MenuWorldShowStatus_E,
-        CW_MenuWorldJoinFisherman_E,
-        CW_MenuWorldDisjoinFisherman_E,
-        CW_MenuWorldShowMap_E,
-        CW_MenuWorldPlayRound_E,
-        CW_MenuWorldExit_E
+        CW_MenuLocationCreate_E = 1,
+        CW_MenuLocationDelete_E,
+        CW_MenuLocationPrintAllLocations_E,
+        CW_MenuLocationShowStatus_E,
+        CW_MenuLocationJoinFisherman_E,
+        CW_MenuLocationDisjoinFisherman_E,
+        CW_MenuLocationShowMap_E,
+        CW_MenuLocationPlayRound_E,
+        CW_MenuLocationExit_E
     };
 
     enum CommandFisherman
@@ -192,111 +192,111 @@ int main()
     while (run)
     {
         cout << "Choose one of Menu item: " << endl;
-        user_input = getValueInt(CN_MenuWorld_E, CN_MenuExit_E);   
+        user_input = getValueInt(CN_MenuLocation_E, CN_MenuExit_E);   
 
             switch (user_input)
             {
-                // World
-                case CN_MenuWorld_E:
+                // Location
+                case CN_MenuLocation_E:
                 {
-                    cout << "Menu->World: 1 - Create, 2 - Delete, 3 - PrintAllWorlds, 4 - ShowStatus,"
+                    cout << "Menu->Location: 1 - Create, 2 - Delete, 3 - PrintAllLocations, 4 - ShowStatus,"
                             " 5 - JoinFisherman, 6 - DisjoinFisherman, 7 - ShowMap, 8 - PlayRound, 9 - Exit" << endl;
-                    user_input = getValueInt(CW_MenuWorldCreate_E, CW_MenuWorldExit_E);
+                    user_input = getValueInt(CW_MenuLocationCreate_E, CW_MenuLocationExit_E);
                     switch (user_input)
                     {
-                    case CW_MenuWorldCreate_E:
+                    case CW_MenuLocationCreate_E:
                     {
                         string name;
-                        class World *cur_world;
+                        class Location *cur_location;
 
-                        cout << "Menu->World->Create: input name and type" << endl;
+                        cout << "Menu->Location->Create: input name and type" << endl;
                         cin >> name >> type;
 
-                        // Check that World with this name doesn`t exsist
-                        cur_world = searchWorldByName(name);
-                        if (cur_world != nullptr)
+                        // Check that Location with this name doesn`t exsist
+                        cur_location = searchLocationByName(name);
+                        if (cur_location != nullptr)
                         {
-                            cout << "Can`t create new World with this name" << endl;
+                            cout << "Can`t create new Location with this name" << endl;
                             break;
                         }
 
-                        // Creating new World
-                        cur_world = new World(name, (World::Type)type);
-                        list_worlds.push_back(cur_world);
+                        // Creating new Location
+                        cur_location = new Location(name, (Location::Type)type);
+                        list_Locations.push_back(cur_location);
                             
                                 } break;
 
-                                case CW_MenuWorldDelete_E:
+                                case CW_MenuLocationDelete_E:
                                 {   
                                     string name;
-                                    class World *cur_world;
+                                    class Location *cur_Location;
 
-                                    cout << "Menu->World->Delete: input world name" << endl;
+                                    cout << "Menu->Location->Delete: input Location name" << endl;
                                     cin >> name;
 
-                                    // Check that World with this name exsist
-                                    cur_world = searchWorldByName(name);   
-                                    if (cur_world == nullptr)
+                                    // Check that Location with this name exsist
+                                    cur_Location = searchLocationByName(name);   
+                                    if (cur_Location == nullptr)
                                     {
-                                        cout << "Can`t delete World with this name" << endl;
+                                        cout << "Can`t delete Location with this name" << endl;
                                         break;
                                     }
 
-                                    // Deleting World
-                                    list_worlds.remove(cur_world);
-                                    delete cur_world;
+                                    // Deleting Location
+                                    list_Locations.remove(cur_Location);
+                                    delete cur_Location;
 
                                 } break;
 
-                                case CW_MenuWorldPrintAllWorlds_E:
+                                case CW_MenuLocationPrintAllLocations_E:
                                 {
                                     n = 1;
-                                    for (class World *w : list_worlds)
+                                    for (class Location *w : list_Locations)
                                         cout << n++ << ". " << w->getName() << endl;
 
                                 } break;
 
-                                case CW_MenuWorldShowStatus_E:
+                                case CW_MenuLocationShowStatus_E:
                                 {
                                     string name;
-                                    class World *cur_world;
+                                    class Location *cur_location;
 
-                                    cout << "Menu->World->ShowStatus: input name" << endl;
+                                    cout << "Menu->Location->ShowStatus: input name" << endl;
                                     cin >> name;
 
-                                    // Check that World with this name exsist
-                                    cur_world = searchWorldByName(name);   
-                                    if (cur_world == nullptr)
+                                    // Check that Location with this name exsist
+                                    cur_location = searchLocationByName(name);   
+                                    if (cur_location == nullptr)
                                     {                               
-                                        cout << "World with this name doesn`t exist" << endl;
+                                        cout << "Location with this name doesn`t exist" << endl;
                                         break;
                                     }
 
-                                    // Show World status
-                                    cur_world->showWorldStatus();
+                                    // Show Location status
+                                    cur_location->showLocationStatus();
 
                                 } break;
 
-                                case CW_MenuWorldJoinFisherman_E:
+                                case CW_MenuLocationJoinFisherman_E:
                                 {
                                     bool add;
                                     string name;
                                     string nick;
-                                    class World *cur_world;
+                                    class Location *cur_location;
                                     class Fisherman *cur_fisherman;
 
-                                    cout << "Menu->World->JoinFisherman: input world name" << endl;
+                                    cout << "Menu->Location->JoinFisherman: input Location name" << endl;
                                     cin >> name;
 
-                                    // Check that World with this name exsist
-                                    cur_world = searchWorldByName(name);   
-                                    if (cur_world == nullptr)
+                                    // Check that Location with this name exsist
+                                    cur_location = searchLocationByName(name);   
+                                    if (cur_location == nullptr)
                                     {
-                                        cout << "World with this name doesn`t exist" << endl;
+                                        cout << "Location with this name doesn`t exist" << endl;
                                         break;
                                     }
 
-                                    cout << "Menu->World->JoinFisherman: input fisherman nick" << endl;
+                                    cout << "Menu->Location->JoinFisherman: input fisherman nick" << endl;
                                     cin >> nick;
 
                                     // Check that Fisherman with this nick exsist
@@ -307,10 +307,10 @@ int main()
                                         break;
                                     }
 
-                                    // Add Fisherman to World
-                                    if (cur_world != nullptr && cur_fisherman != nullptr)
+                                    // Add Fisherman to Location
+                                    if (cur_location != nullptr && cur_fisherman != nullptr)
                                     {
-                                        add = cur_world->joinFisherman(cur_fisherman);
+                                        add = cur_location->joinFisherman(cur_fisherman);
 
                                         if (add == false)
                                         {
@@ -320,25 +320,25 @@ int main()
 
                                 } break;
 
-                                case CW_MenuWorldDisjoinFisherman_E:
+                                case CW_MenuLocationDisjoinFisherman_E:
                                 {
                                     string name;
                                     string nick;
-                                    class World *cur_world;
+                                    class Location *cur_Location;
                                     class Fisherman *cur_fisherman;
 
-                                    cout << "Menu->World->FishermanDelete: input world name" << endl;
+                                    cout << "Menu->Location->FishermanDelete: input Location name" << endl;
                                     cin >> name;
 
-                                    // Check that World with this name exsist
-                                    cur_world = searchWorldByName(name);   
-                                    if (cur_world == nullptr)
+                                    // Check that Location with this name exsist
+                                    cur_Location = searchLocationByName(name);   
+                                    if (cur_Location == nullptr)
                                     {
-                                        cout << "World with this name doesn`t exist" << endl;
+                                        cout << "Location with this name doesn`t exist" << endl;
                                         break;
                                     }
 
-                                    cout << "Menu->World->FishermanDelete: input fisherman nick" << endl;
+                                    cout << "Menu->Location->FishermanDelete: input fisherman nick" << endl;
                                     cin >> nick;
 
                                     cur_fisherman = searchFishermanByNick(nick);
@@ -348,53 +348,53 @@ int main()
                                         break;
                                     }
 
-                                    // Delete Fisherman from World
-                                    if (cur_world != nullptr && cur_fisherman != nullptr)
+                                    // Delete Fisherman from Location
+                                    if (cur_Location != nullptr && cur_fisherman != nullptr)
                                     {
-                                        cur_world->disjoinFisherman(cur_fisherman);
-                                        cur_fisherman->setWorld(nullptr);
+                                        cur_Location->disjoinFisherman(cur_fisherman);
+                                        cur_fisherman->setLocation(nullptr);
                                     }
                                 } break;
 
-                                case CW_MenuWorldShowMap_E:
+                                case CW_MenuLocationShowMap_E:
                                 {
                                     string name;
-                                    class World *cur_world;
+                                    class Location *cur_Location;
 
-                                    cout << "Menu->World->ShowMap: input world name" << endl;
+                                    cout << "Menu->Location->ShowMap: input Location name" << endl;
                                     cin >> name;
 
-                                    // Check that World with this name exsist
-                                    cur_world = searchWorldByName(name);
-                                    if (cur_world == nullptr)
+                                    // Check that Location with this name exsist
+                                    cur_Location = searchLocationByName(name);
+                                    if (cur_Location == nullptr)
                                     {
-                                        cout << "World with this name doesn`t exist" << endl;
+                                        cout << "Location with this name doesn`t exist" << endl;
                                         break;
                                     }
 
-                                    cur_world->showMap();
+                                    cur_Location->showMap();
                                 } break;
 
-                                case CW_MenuWorldPlayRound_E:
+                                case CW_MenuLocationPlayRound_E:
                                 {
                                     string name;
-                                    class World *cur_world;
+                                    class Location *cur_Location;
                                     int index;
 
-                                    cout << "Menu->World->PlayRound: input world name" << endl;
+                                    cout << "Menu->Location->PlayRound: input Location name" << endl;
                                     cin >> name;
 
-                                    // Check that World with this name exsist
-                                    cur_world = searchWorldByName(name);
-                                    if (cur_world == nullptr)
+                                    // Check that Location with this name exsist
+                                    cur_Location = searchLocationByName(name);
+                                    if (cur_Location == nullptr)
                                     {
-                                        cout << "World with this name doesn`t exist" << endl;
+                                        cout << "Location with this name doesn`t exist" << endl;
                                         break;
                                     }
 
                                     for (index = 0; index < 43; index++)
                                     {
-                                        cur_world->playRound();
+                                        cur_Location->playRound();
                                     }
                                 } break;
                             }
@@ -514,23 +514,23 @@ int main()
                 case CN_MenuLoad_E:
                 {
                     std::ifstream file;
-                    class World * cur_world;
+                    class Location * cur_Location;
                     class Fisherman *cur_fisherman;
 
-                    // Check old objects worlds and fishermen
-                    if (list_worlds.size() != 0 || list_fishermen.size() != 0)
+                    // Check old objects Locations and fishermen
+                    if (list_Locations.size() != 0 || list_fishermen.size() != 0)
                     {
-                        cout << "List of worlds or fishermen aren't empty. Do you want to delete them?[Y/N]" << endl;
+                        cout << "List of Locations or fishermen aren't empty. Do you want to delete them?[Y/N]" << endl;
                         if (getValueYesOrNo())
                         {
-                            // Deletes all worlds and fishermen
+                            // Deletes all Locations and fishermen
                             
-                            for (class World *cur_world : list_worlds)
+                            for (class Location *cur_Location : list_Locations)
                             {
-                                // Deleting World
-                                delete cur_world;
+                                // Deleting Location
+                                delete cur_Location;
                             }
-                            list_worlds.clear();
+                            list_Locations.clear();
 
                             for (class Fisherman *cur_fisherman : list_fishermen)
                             {
@@ -549,15 +549,15 @@ int main()
 
                     if (file.is_open())
                     {
-                        // 1 - Loading amount of instance of World in the list
+                        // 1 - Loading amount of instance of Location in the list
                         file.read((char *)&size, sizeof(size));
 
-                        // 2 - Loading every World's instnce from the file
+                        // 2 - Loading every Location's instnce from the file
                         for (; size > 0; size--)
                         {
-                            cur_world = new World();
-                            cur_world->load(file);
-                            list_worlds.push_back(cur_world);
+                            cur_Location = new Location();
+                            cur_Location->load(file);
+                            list_Locations.push_back(cur_Location);
                         }
 
                         // 3 - Loading amount of fishermen in the list
@@ -567,7 +567,7 @@ int main()
                         for (; size > 0; size--)
                         {
                             cur_fisherman = new Fisherman();
-                            cur_fisherman->load(file, list_worlds);
+                            cur_fisherman->load(file, list_Locations);
                             list_fishermen.push_back(cur_fisherman);
                         }
 
@@ -600,14 +600,14 @@ int main()
 
                     if (file.is_open())
                     {
-                        // 1 - Saving amount of instance of World in the list
-                        size = list_worlds.size();
+                        // 1 - Saving amount of instance of Location in the list
+                        size = list_Locations.size();
                         end_marker = END_MARKER_VALUE;
 
                         file.write((const char *)&size, sizeof(size));
 
-                        // 2 - Saving every World's instance to file
-                        for (class World *w : list_worlds)
+                        // 2 - Saving every Location's instance to file
+                        for (class Location *w : list_Locations)
                         {
                             w->save(file); 
                         }

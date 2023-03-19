@@ -1,27 +1,27 @@
 
 #include <iostream>
 
-#include "world_objects.h"
+#include "fish.h"
 
 const std::string typeNameTuna = " T ";
 const std::string typeNameCarp = " C ";
 
 /* ---------- class WorldObject ---------- */
 
-WorldObject::WorldObject() : x(0.0), y(0.0)
+LocationObject::LocationObject() : x(0.0), y(0.0)
 {
 }
 
-WorldObject::~WorldObject()
+LocationObject::~LocationObject()
 {
 }
 
-void WorldObject::setXY(float pos_x, float pos_y)
+void LocationObject::setXY(float pos_x, float pos_y)
 {
     x = pos_x;
     y = pos_y;
 }
-void WorldObject::getXY(float &pos_x, float &pos_y) const
+void LocationObject::getXY(float &pos_x, float &pos_y) const
 {
     pos_x = x;
     pos_y = y;

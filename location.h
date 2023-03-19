@@ -1,18 +1,18 @@
 
-#ifndef WORLD_H
-#define WORLD_H
+#ifndef LOCATION_H
+#define LOCATION_H
 
 #include <string>
 #include <fstream>
 #include <list>
 
-#include "world_objects.h"
+#include "fish.h"
 
 #define FISH_COUNT 2
 
 class Fisherman;
 
-class World
+class Location
 {
     public:
         enum Type
@@ -22,9 +22,9 @@ class World
             WT_one_biom
         };
 
-        World();
-        World(std::string n, Type t);
-        ~World();
+        Location();
+        Location(std::string n, Type t);
+        ~Location();
 
         const std::string & getName() const;
 
@@ -33,7 +33,7 @@ class World
 
         bool loadFisherman(class Fisherman *p_new, class Fisherman *p_old);
 
-        void showWorldStatus() const;
+        void showLocationStatus() const;
         void showMap() const;
         static float getMaxMapSize();
 
@@ -56,4 +56,4 @@ class World
         Fish * fish[FISH_COUNT];
 };
 
-#endif /* WORLD_H */
+#endif /* LOCATION_H */

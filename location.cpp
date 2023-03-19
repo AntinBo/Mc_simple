@@ -2,46 +2,46 @@
 #include <iostream>
 #include <fstream>
 
-#include "world.h"
+#include "location.h"
 #include "fisherman.h"
-#include "world_objects.h"
+#include "fish.h"
 
-#define WORLD_MAP_SIZE 10
+#define LOCATION_MAP_SIZE 10
 
 using namespace std;
 
-World::World()
+Location::Location()
 {
     fish[0] = new Tuna();
     fish[1] = new Carp();
 }
 
-World::World(string n, Type t)
+Location::Location(string n, Type t)
 {
     name = n;
     type = t;
 
-    cout << "World was created(" << name << ", " << type << ")" << endl;
+    cout << "Location was created(" << name << ", " << type << ")" << endl;
 
     fish[0] = new Tuna();
     fish[1] = new Carp();
 }
 
-World::~World()
+Location::~Location()
 {
     for (class Fisherman *p : fishermen)
     {
-        p->setWorld(nullptr);
+        p->setLocation(nullptr);
     }
 
-    cout << "World was deleted(" << name << ", " << type << ")" << endl;
+    cout << "Location was deleted(" << name << ", " << type << ")" << endl;
 }
 
-void World::showWorldStatus() const
+void Location::showLocationStatus() const
 {
     int n = 1;
 
-    cout << "World(" << name << ", " << type << ")" << endl;
+    cout << "Location(" << name << ", " << type << ")" << endl;
     cout << "  Fishermen:" << endl;
     cout << "  --------" << endl;
     for (class Fisherman *p : fishermen)
@@ -50,20 +50,20 @@ void World::showWorldStatus() const
     }
 }
 
-void World::showMap() const
+void Location::showMap() const
 {
     int index;
     float x, y;
     bool empty_cell;
     float cur_x, cur_y;
 
-    cout << "World(" << name << ", " << type << ")" << endl;
+    cout << "Location(" << name << ", " << type << ")" << endl;
     cout << "+ 0  1  2  3  4  5  6  7  8  9 +" << endl;
-    for (cur_y = 0; cur_y < WORLD_MAP_SIZE; cur_y++)
+    for (cur_y = 0; cur_y < LOCATION_MAP_SIZE; cur_y++)
     {
         cout << cur_y;
 
-        for (cur_x = 0; cur_x < WORLD_MAP_SIZE; cur_x++)
+        for (cur_x = 0; cur_x < LOCATION_MAP_SIZE; cur_x++)
         {
 
             empty_cell = true;
@@ -101,26 +101,26 @@ void World::showMap() const
     cout << "+------------------------------+" << endl;
 }
 
-float World::getMaxMapSize()
+float Location::getMaxMapSize()
 {
-    return WORLD_MAP_SIZE;
+    return LOCATION_MAP_SIZE;
 }
 
-const string & World::getName() const
+const string & Location::getName() const
 {
     return name;
 }
 
-bool World::joinFisherman(class Fisherman *p)
+bool Location::joinFisherman(class Fisherman *p)
 {
-    class World *w;
+    class Location *w;
 
-    w = p->getWorld();
+    w = p->getLocation();
 
     if (w == nullptr)
     {
         fishermen.push_back(p);
-        p->setWorld(this);
+        p->setLocation(this);
         
         return true;
     }
@@ -128,14 +128,14 @@ bool World::joinFisherman(class Fisherman *p)
     return false;                             
 }
 
-bool World::disjoinFisherman(class Fisherman *p)
+bool Location::disjoinFisherman(class Fisherman *p)
 {
     fishermen.remove(p);    
 
     return true;   
 }
 
-bool World::loadFisherman(class Fisherman *p_new, class Fisherman *p_old)
+bool Location::loadFisherman(class Fisherman *p_new, class Fisherman *p_old)
 {
     for (class Fisherman *p : fishermen)
     {
@@ -149,7 +149,7 @@ bool World::loadFisherman(class Fisherman *p_new, class Fisherman *p_old)
     return false;
 }
 
-void World::load(std::ifstream & f)
+void Location::load(std::ifstream & f)
 {   
     int index;
     int length;
@@ -177,7 +177,7 @@ void World::load(std::ifstream & f)
         fish[index]->load(f);
 }
 
-void World::save(std::ofstream & f) const
+void Location::save(std::ofstream & f) const
 {
     int index;
     int length;
@@ -203,30 +203,30 @@ void World::save(std::ofstream & f) const
         fish[index]->save(f);
 }
 
-void World::setTunaXY(float pos_x, float pos_y)
+void Location::setTunaXY(float pos_x, float pos_y)
 {
     fish[0]->setXY(pos_x, pos_y);
 }
 // void getTunaXY(float &pos_x, float &pos_y) const
-void World::setCarpXY(float pos_x, float pos_y)
+void Location::setCarpXY(float pos_x, float pos_y)
 {
     fish[1]->setXY(pos_x, pos_y);
 }
 // void getCarpXY(float &pos_x, float &pos_y) const
 
-void World::playRound()
+void Location::playRound()
 {
     float x, y;
     float cur_x_tuna, cur_y_tuna, cur_x_carp, cur_y_carp;
 
     // Get random X and Y for Tuna and set new position for Tuna
-    cur_x_tuna = rand() % ((int)World::getMaxMapSize());
-    cur_y_tuna = rand() % ((int)World::getMaxMapSize());
+    cur_x_tuna = rand() % ((int)Location::getMaxMapSize());
+    cur_y_tuna = rand() % ((int)Location::getMaxMapSize());
     setTunaXY(cur_x_tuna, cur_y_tuna);
 
     // Get random X and Y for Carp and set new position for Carp
-    cur_x_carp = rand() % ((int)World::getMaxMapSize());
-    cur_y_carp = rand() % ((int)World::getMaxMapSize());
+    cur_x_carp = rand() % ((int)Location::getMaxMapSize());
+    cur_y_carp = rand() % ((int)Location::getMaxMapSize());
     setCarpXY(cur_x_carp, cur_y_carp);
 
     fish[0]->getXY(cur_x_tuna, cur_y_tuna);

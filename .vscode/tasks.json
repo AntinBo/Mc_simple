@@ -12,8 +12,9 @@
 				"main.cpp",
 				"skin.cpp",
 				"fisherman.cpp",
-				"world.cpp",
-				"world_objects.cpp",
+				"location.cpp",
+				"location_object.cpp",
+				"fish.cpp",
 				"-o",
 				"main.exe"
 			    // "${fileDirname}\\${fileBasenameNoExtension}.exe"

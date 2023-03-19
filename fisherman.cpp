@@ -2,7 +2,7 @@
 #include <iostream>
 
 #include "fisherman.h"
-#include "world.h"
+#include "location.h"
 
 using namespace std;
 
@@ -12,7 +12,7 @@ Fisherman::Fisherman()
 {
 }
 
-Fisherman::Fisherman(unsigned int _Id, const string &_nick, Skin::Colors c, Skin::Width w) : Id(_Id), nick(_nick), skin(c, w), health(100), state(PS_happy), fish(0), world(nullptr)
+Fisherman::Fisherman(unsigned int _Id, const string &_nick, Skin::Colors c, Skin::Width w) : Id(_Id), nick(_nick), skin(c, w), health(100), state(PS_happy), fish(0), location(nullptr)
 {
     cout << "Fisherman was created(" << Id << ", " << nick << ", " << (int)skin.getColor()
          << ", " << (int)skin.getWidth() << ", " << health << ", " << state << ")" << endl;
@@ -20,9 +20,9 @@ Fisherman::Fisherman(unsigned int _Id, const string &_nick, Skin::Colors c, Skin
 
 Fisherman::~Fisherman()
 {
-    if (world != nullptr)
+    if (location != nullptr)
     {
-        world->joinFisherman(this);
+        location->joinFisherman(this);
     }
 }
 
@@ -31,27 +31,27 @@ const string &Fisherman::getNick() const
     return nick;
 }
 
-void Fisherman::setWorld(class World *w)
+void Fisherman::setLocation(class Location *w)
 {
-    world = w;
+    location = w;
 }
 
-class World *Fisherman::getWorld()
+class Location *Fisherman::getLocation()
 {
-    return world;
+    return location;
 }
 
 void Fisherman::showFishermanStatus() const
 {
     cout << "  Fisherman(" << Id << ", " << nick << ", " << (int)skin.getColor()
          << ", " << (int)skin.getWidth() << ", " << health << ", " << state << ", f: " << fish << ", x: " << x << ", y: " << y << ")" << endl;
-    if (world != nullptr)
+    if (location != nullptr)
     {
-        cout << "    World: " << world->getName() << endl;
+        cout << "    Location: " << location->getName() << endl;
     }
 }
 
-void Fisherman::load(std::ifstream &f, std::list<class World *> &list_worlds)
+void Fisherman::load(std::ifstream &f, std::list<class Location *> &list_locations)
 {
     int length;
     char c_nick[128];
@@ -84,11 +84,11 @@ void Fisherman::load(std::ifstream &f, std::list<class World *> &list_worlds)
 
     // 8 - Loadnig old self-pointer
     f.read((char *)&p, sizeof(p));
-    for (class World *w : list_worlds)
+    for (class Location *w : list_locations)
     {
         if (w->loadFisherman(this, p))
         {
-            world = w;
+            location = w;
             break;
         }
     }
