@@ -38,7 +38,7 @@ class Location
 
         void showLocationStatus() const;
         void showMap() const;
-        static float getMaxMapSize();
+        float getMaxMapSize() const;
 
         void load(std::ifstream &f);
         void save(std::ofstream & f) const;

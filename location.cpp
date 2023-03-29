@@ -6,7 +6,7 @@
 #include "fisherman.h"
 #include "fish.h"
 
-#define LOCATION_MAP_SIZE 10
+#define SMALL_LOCATION_MAP_SIZE 10
 
 using namespace std;
 
@@ -15,6 +15,13 @@ const char * location_type[] =
     "Lake",
     "River",
     "Sea"
+};
+
+const float location_map_size[] =
+{
+    10.0,
+    30.0,
+    50.0
 };
 
 Location::Location()
@@ -27,7 +34,7 @@ Location::Location(string n, LocationType t)
 {
     name = n;
 
-    if (type >= LT_Count)
+    if (t >= LT_Count)
         type = LT_Lake;
     else
         type = t;
@@ -55,7 +62,7 @@ const string &Location::getName() const
 
 const char * Location::getLocationType() const
 {
-    return location_type[type - 1];
+    return location_type[type];
 }
 
 void Location::showLocationStatus() const
@@ -71,60 +78,62 @@ void Location::showLocationStatus() const
     }
 }
 
+float Location::getMaxMapSize() const
+{
+    return location_map_size[type];
+}
+
 void Location::showMap() const
 {
     int index;
     float x, y;
     bool empty_cell;
     float cur_x, cur_y;
-
-    cout << "Location(" << name << ", type: " << getLocationType() << ")" << endl;
-    cout << "+ 0  1  2  3  4  5  6  7  8  9 +" << endl;
-    for (cur_y = 0; cur_y < LOCATION_MAP_SIZE; cur_y++)
+    if (location_type[0])
     {
-        cout << cur_y;
-
-        for (cur_x = 0; cur_x < LOCATION_MAP_SIZE; cur_x++)
+        cout << "Location(" << name << ", type: " << getLocationType() << ")" << endl;
+        cout << "+ 0  1  2  3  4  5  6  7  8  9 +" << endl;
+        for (cur_y = 0; cur_y < getMaxMapSize(); cur_y++)
         {
+            cout << cur_y;
 
-            empty_cell = true;
-
-            for (index = 0; index < FISH_COUNT; index++)
+            for (cur_x = 0; cur_x < getMaxMapSize(); cur_x++)
             {
-                fish[index]->getXY(x, y);
-                if (cur_x == x && cur_y == y)
-                {
-                    cout << fish[index]->getTypeName();
-                    empty_cell = false;
-                }
-            }
 
-            // Search fisherman's in position X, Y
-            for (class Fisherman *p : fishermen)
-            {
-                p->getXY(x, y);
-                if (cur_x == x && cur_y == y)
+                empty_cell = true;
+
+                for (index = 0; index < FISH_COUNT; index++)
                 {
-                    if (empty_cell)
+                    fish[index]->getXY(x, y);
+                    if (cur_x == x && cur_y == y)
                     {
-                        cout << p->getTypeName();
+                        cout << fish[index]->getTypeName();
                         empty_cell = false;
                     }
                 }
+
+                // Search fisherman's in position X, Y
+                for (class Fisherman *p : fishermen)
+                {
+                    p->getXY(x, y);
+                    if (cur_x == x && cur_y == y)
+                    {
+                        if (empty_cell)
+                        {
+                            cout << p->getTypeName();
+                            empty_cell = false;
+                        }
+                    }
+                }
+
+                if (empty_cell)
+                    cout << " - ";
             }
 
-            if (empty_cell)
-                cout << " - ";
+            cout << "|" << endl;
         }
-
-        cout << "|" << endl;
-    }                                       
-    cout << "+------------------------------+" << endl;
-}
-
-float Location::getMaxMapSize()
-{
-    return LOCATION_MAP_SIZE;
+        cout << "+------------------------------+" << endl;
+    }
 }
 
 bool Location::joinFisherman(class Fisherman *p)

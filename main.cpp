@@ -221,7 +221,7 @@ int main()
                             }
 
                             // Creating new Location
-                            cur_location = new Location(name, (Location::LocationType)type);
+                            cur_location = new Location(name, (Location::LocationType)(type - 1));
                             list_Locations.push_back(cur_location);
                             
                         } break;
