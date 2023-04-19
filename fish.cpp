@@ -3,8 +3,8 @@
 
 #include "fish.h"
 
-const std::string typeNameTuna = " T ";
-const std::string typeNameCarp = " C ";
+const std::string typeNameTuna = "T";
+const std::string typeNameCarp = "C";
 
 /* ---------- class WorldObject ---------- */
 

@@ -1,6 +1,8 @@
 
+#include <vector>
 #include <iostream>
 #include <fstream>
+#include <stdarg.h>
 
 #include "location.h"
 #include "fisherman.h"
@@ -10,18 +12,43 @@
 
 using namespace std;
 
-const char * location_type[] = 
+struct arrayStructure
 {
-    "Lake",
-    "River",
-    "Sea"
+    const char * type_name;
+    float map_size;
 };
 
-const float location_map_size[] =
+struct arrayStructure actualArray[Location::LT_Count] = {
+    {"Lake", 10.0},
+    {"River", 30.0},
+    {"Sea", 50.0}
+};
+
+std::string format(const char *fmt, ...)
 {
-    10.0,
-    30.0,
-    50.0
+    va_list args;
+    va_start(args, fmt);
+    std::vector<char> v(1024);
+    while (true)
+    {
+        va_list args2;
+        va_copy(args2, args);
+        int res = vsnprintf(v.data(), v.size(), fmt, args2);
+        if ((res >= 0) && (res < static_cast<int>(v.size())))
+        {
+            va_end(args);
+            va_end(args2);
+            return std::string(v.data());
+        }
+        size_t size;
+        if (res < 0)
+            size = v.size() * 2;
+        else
+            size = static_cast<size_t>(res) + 1;
+        v.clear();
+        v.resize(size);
+        va_end(args2);
+    }
 };
 
 Location::Location()
@@ -62,7 +89,7 @@ const string &Location::getName() const
 
 const char * Location::getLocationType() const
 {
-    return location_type[type];
+    return actualArray[type].type_name;
 }
 
 void Location::showLocationStatus() const
@@ -80,60 +107,71 @@ void Location::showLocationStatus() const
 
 float Location::getMaxMapSize() const
 {
-    return location_map_size[type];
+    return actualArray[type].map_size;
 }
 
 void Location::showMap() const
 {
+    int n;
     int index;
     float x, y;
-    bool empty_cell;
+    std::string str;
     float cur_x, cur_y;
-    if (location_type[0])
+
+    cout << "Location(" << name << ", type: " << getLocationType() << ")" << endl;
+    cout << " + ";
+    for (n = 0; n < (int)getMaxMapSize(); n++)
     {
-        cout << "Location(" << name << ", type: " << getLocationType() << ")" << endl;
-        cout << "+ 0  1  2  3  4  5  6  7  8  9 +" << endl;
-        for (cur_y = 0; cur_y < getMaxMapSize(); cur_y++)
+        str = format("%3d", n);
+        cout << str;
+    };
+    cout << " +" << endl;
+    
+    for (cur_y = 0; cur_y < getMaxMapSize(); cur_y++)
+    {
+        str = format("%2d ", ((int)cur_y));
+        cout << str;
+
+        for (cur_x = 0; cur_x < getMaxMapSize(); cur_x++)
         {
-            cout << cur_y;
-
-            for (cur_x = 0; cur_x < getMaxMapSize(); cur_x++)
+            for (index = 0; index < FISH_COUNT; index++)
             {
-
-                empty_cell = true;
-
-                for (index = 0; index < FISH_COUNT; index++)
+                fish[index]->getXY(x, y);
+                if (cur_x == x && cur_y == y)
                 {
-                    fish[index]->getXY(x, y);
-                    if (cur_x == x && cur_y == y)
-                    {
-                        cout << fish[index]->getTypeName();
-                        empty_cell = false;
-                    }
+                    cout << fish[index]->getTypeName();
                 }
-
-                // Search fisherman's in position X, Y
-                for (class Fisherman *p : fishermen)
+                else
                 {
-                    p->getXY(x, y);
-                    if (cur_x == x && cur_y == y)
-                    {
-                        if (empty_cell)
-                        {
-                            cout << p->getTypeName();
-                            empty_cell = false;
-                        }
-                    }
+                    cout << " ";
                 }
-
-                if (empty_cell)
-                    cout << " - ";
             }
 
-            cout << "|" << endl;
+            // Search fisherman's in position X, Y
+            for (class Fisherman *p : fishermen)
+            {
+                p->getXY(x, y);
+                if (cur_x == x && cur_y == y)
+                {
+                    cout << p->getTypeName();
+                }
+                else
+                {
+                    cout << "-";
+                }
+            }
         }
-        cout << "+------------------------------+" << endl;
+
+        cout << " |" << endl;
     }
+
+    cout << " + ";
+    for (n = 0; n < (int)getMaxMapSize(); n++)
+    {
+        str = format("%3d", n);
+        cout << str;
+    };
+    cout << " +" << endl;
 }
 
 bool Location::joinFisherman(class Fisherman *p)

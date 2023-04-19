@@ -6,7 +6,7 @@
 
 using namespace std;
 
-const std::string typeNameFisherman = " * ";
+const std::string typeNameFisherman = "*";
 
 Fisherman::Fisherman()
 {
