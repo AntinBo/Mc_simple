@@ -324,7 +324,7 @@ int main()
                         {
                             string name;
                             string nick;
-                            class Location *cur_Location;
+                            class Location *cur_location;
                             class Fisherman *cur_fisherman;
 
                             cout << "Menu->Location->FishermanDelete: input fisherman nick" << endl;
@@ -338,14 +338,14 @@ int main()
                             }
 
                             // Check that Location with this name exsist
-                            cur_Location = cur_fisherman->getLocation();
-                            if (cur_Location == nullptr)
+                            cur_location = cur_fisherman->getLocation();
+                            if (cur_location == nullptr)
                                 break;
 
                             // Delete Fisherman from Location
-                            if (cur_Location != nullptr && cur_fisherman != nullptr)
+                            if (cur_location != nullptr && cur_fisherman != nullptr)
                             {
-                                cur_Location->disjoinFisherman(cur_fisherman);
+                                cur_location->disjoinFisherman(cur_fisherman);
                                 cur_fisherman->setLocation(nullptr);
                             }
                         } break;
@@ -478,7 +478,7 @@ int main()
                         {
                             float x, y;
                             string nick;
-                            Location * l;
+                            Location * cur_location;
                             class Fisherman *cur_fisherman;
 
                             cout << "Menu->Fisherman->SetPosition: input fisherman nick" << endl;
@@ -495,8 +495,8 @@ int main()
                             cout << "Input position of fisherman(x, y)" << endl;
                             cin >> x >> y;
 
-                            l = cur_fisherman->getLocation();
-                            if (l != nullptr && l->isSpotEmpty(x, y) == false)
+                            cur_location = cur_fisherman->getLocation();
+                            if (cur_location != nullptr && cur_location->isSpotEmpty(x, y) == false)
                                 break;
 
                             cur_fisherman->setXY(x, y);

@@ -176,23 +176,23 @@ void Location::showMap() const
 
 bool Location::isSpotEmpty(float x, float y)
 {
-    bool used;
+    bool empty;
     float cur_x, cur_y;
     
     // Checking if coordinates for all the fishermen are different
-    used = false;
+    empty = true;
 
     for (class Fisherman *fm : fishermen)
     {
         fm->getXY(cur_x, cur_y);
         if (cur_x == x && cur_y == y)
         {
-            used = true;
+            empty = false;
             break;
         }
     }
 
-    return used;
+    return empty;
 }
 
 bool Location::joinFisherman(class Fisherman *p)
