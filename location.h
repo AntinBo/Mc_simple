@@ -31,6 +31,8 @@ class Location
         const std::string & getName() const;
         const char * getLocationType() const;
 
+        bool isSpotEmpty(float x, float y);
+
         bool joinFisherman(class Fisherman *p);
         bool disjoinFisherman(class Fisherman *p);
 

@@ -22,7 +22,7 @@ Fisherman::~Fisherman()
 {
     if (location != nullptr)
     {
-        location->joinFisherman(this);
+        location->disjoinFisherman(this);
     }
 }
 
@@ -57,7 +57,7 @@ void Fisherman::load(std::ifstream &f, std::list<class Location *> &list_locatio
     char c_nick[128];
     class Fisherman *p;
 
-    // 1 - Loadnig Id
+    // 1 - Loading Id
     f.read((char *)&Id, sizeof(Id)); // int
 
     // 2 - Loading Nick

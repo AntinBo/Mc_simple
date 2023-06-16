@@ -16,11 +16,12 @@ LocationObject::~LocationObject()
 {
 }
 
-void LocationObject::setXY(float pos_x, float pos_y)
+void LocationObject::setXY(float pos_x, float pos_y)  
 {
     x = pos_x;
     y = pos_y;
 }
+
 void LocationObject::getXY(float &pos_x, float &pos_y) const
 {
     pos_x = x;

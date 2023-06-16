@@ -279,22 +279,10 @@ int main()
 
                         case CW_MenuLocationJoinFisherman_E:
                         {
-                            bool add;
                             string name;
                             string nick;
                             class Location *cur_location;
                             class Fisherman *cur_fisherman;
-
-                            cout << "Menu->Location->JoinFisherman: input Location name" << endl;
-                            cin >> name;
-
-                            // Check that Location with this name exsist
-                            cur_location = searchLocationByName(name);   
-                            if (cur_location == nullptr)
-                            {
-                                cout << "Location with this name doesn`t exist" << endl;
-                                break;
-                            }
 
                             cout << "Menu->Location->JoinFisherman: input fisherman nick" << endl;
                             cin >> nick;
@@ -307,17 +295,29 @@ int main()
                                 break;
                             }
 
+                            // Check that Fisherman with this nick exsist
+                            if (cur_fisherman->getLocation() != nullptr)
+                            {
+                                cout << "Fisherman with this nick already exist in another location: " << cur_fisherman << endl;
+                                break;
+                            }
+
+                            cout << "Menu->Location->JoinFisherman: input Location name" << endl;
+                            cin >> name;
+
+                            // Check that Location with this name exsist
+                            cur_location = searchLocationByName(name);
+                            if (cur_location == nullptr)
+                            {
+                                cout << "Location with this name doesn`t exist" << endl;
+                                break;
+                            }
+
                             // Add Fisherman to Location
                             if (cur_location != nullptr && cur_fisherman != nullptr)
                             {
-                                add = cur_location->joinFisherman(cur_fisherman);
-
-                                if (add == false)
-                                {
-                                    cout << "Fisherman with this name already has added!" << endl;
-                                }
+                                cur_location->joinFisherman(cur_fisherman);
                             }
-
                         } break;
 
                         case CW_MenuLocationDisjoinFisherman_E:
@@ -326,17 +326,6 @@ int main()
                             string nick;
                             class Location *cur_Location;
                             class Fisherman *cur_fisherman;
-
-                            cout << "Menu->Location->FishermanDelete: input Location name" << endl;
-                            cin >> name;
-
-                            // Check that Location with this name exsist
-                            cur_Location = searchLocationByName(name);   
-                            if (cur_Location == nullptr)
-                            {
-                                cout << "Location with this name doesn`t exist" << endl;
-                                break;
-                            }
 
                             cout << "Menu->Location->FishermanDelete: input fisherman nick" << endl;
                             cin >> nick;
@@ -347,6 +336,11 @@ int main()
                                 cout << "Fisherman with this nick doesn`t exist" << endl;
                                 break;
                             }
+
+                            // Check that Location with this name exsist
+                            cur_Location = cur_fisherman->getLocation();
+                            if (cur_Location == nullptr)
+                                break;
 
                             // Delete Fisherman from Location
                             if (cur_Location != nullptr && cur_fisherman != nullptr)
@@ -403,29 +397,29 @@ int main()
                 // Fisherman
                 case CN_MenuFisherman_E:
                 {
-                            cout << "Menu->Fisherman: 1 - Create, 2 - Delete, 3 - PrintAllFishermen, 4 - ShowStatus, 5 - SetPosition, 6 - Exit" << endl;
-                            user_input = getValueInt(CP_MenuFishermanCreate_E, CP_MenuFishermanExit_E);
-                            switch (user_input)
+                    cout << "Menu->Fisherman: 1 - Create, 2 - Delete, 3 - PrintAllFishermen, 4 - ShowStatus, 5 - SetPosition, 6 - Exit" << endl;
+                    user_input = getValueInt(CP_MenuFishermanCreate_E, CP_MenuFishermanExit_E);
+                    switch (user_input)
+                    {
+                        case CP_MenuFishermanCreate_E:
+                        {
+                            string nick;
+                            class Fisherman *cur_fisherman;
+
+                            cout << "Menu->Fisherman->Create: input Id, nick, skin's color and width " << endl;
+                            cin >> Id >> nick >> color >> width;
+
+                            // Check that Fisherman with this nick doesn`t exsist
+                            cur_fisherman = searchFishermanByNick(nick);
+                            if (cur_fisherman != nullptr)
                             {
-                            case CP_MenuFishermanCreate_E:
-                            {
-                                    string nick;
-                                    class Fisherman *cur_fisherman;
+                                cout << "Can`t create new Fisherman with this nick" << endl;
+                                break;
+                            }
 
-                                    cout << "Menu->Fisherman->Create: input Id, nick, skin's color and width " << endl;
-                                    cin >> Id >> nick >> color >> width;
-
-                                    // Check that Fisherman with this nick doesn`t exsist
-                                    cur_fisherman = searchFishermanByNick(nick);
-                                    if (cur_fisherman != nullptr)
-                                    {
-                                        cout << "Can`t create new Fisherman with this nick" << endl;
-                                        break;
-                                    }
-
-                                    // Creating new Fisherman
-                                    cur_fisherman = new Fisherman(Id, nick, (Skin::Colors)color, (Skin::Width)width);
-                                    list_fishermen.push_back(cur_fisherman);
+                            // Creating new Fisherman
+                            cur_fisherman = new Fisherman(Id, nick, (Skin::Colors)color, (Skin::Width)width);
+                            list_fishermen.push_back(cur_fisherman);
                         } break;
 
                         case CP_MenuFishermanDelete_E:
@@ -484,6 +478,7 @@ int main()
                         {
                             float x, y;
                             string nick;
+                            Location * l;
                             class Fisherman *cur_fisherman;
 
                             cout << "Menu->Fisherman->SetPosition: input fisherman nick" << endl;
@@ -499,7 +494,13 @@ int main()
 
                             cout << "Input position of fisherman(x, y)" << endl;
                             cin >> x >> y;
+
+                            l = cur_fisherman->getLocation();
+                            if (l != nullptr && l->isSpotEmpty(x, y) == false)
+                                break;
+
                             cur_fisherman->setXY(x, y);
+
                         } break;
 
                         case CP_MenuFishermanExit_E:

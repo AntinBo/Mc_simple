@@ -174,17 +174,42 @@ void Location::showMap() const
     cout << " +" << endl;
 }
 
+bool Location::isSpotEmpty(float x, float y)
+{
+    bool used;
+    float cur_x, cur_y;
+    
+    // Checking if coordinates for all the fishermen are different
+    used = false;
+
+    for (class Fisherman *fm : fishermen)
+    {
+        fm->getXY(cur_x, cur_y);
+        if (cur_x == x && cur_y == y)
+        {
+            used = true;
+            break;
+        }
+    }
+
+    return used;
+}
+
 bool Location::joinFisherman(class Fisherman *p)
 {
-    class Location *w;
+    float x, y;
 
-    w = p->getLocation();
+    p->getXY(x, y);
 
-    if (w == nullptr)
+    if (isSpotEmpty(x, y))
+    {
+        cout << "You can't join another fisherman to this spot. Change coordinates for him first" << endl;
+    }
+    else
     {
         fishermen.push_back(p);
         p->setLocation(this);
-        
+        cout << "Fisherman has been added successfully" << endl;
         return true;
     }
 
