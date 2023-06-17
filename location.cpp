@@ -117,6 +117,8 @@ void Location::showMap() const
     float x, y;
     std::string str;
     float cur_x, cur_y;
+    const class Fisherman *p;
+    std::list<class Fisherman *>::const_iterator ci;
 
     cout << "Location(" << name << ", type: " << getLocationType() << ")" << endl;
     cout << " + ";
@@ -148,18 +150,20 @@ void Location::showMap() const
             }
 
             // Search fisherman's in position X, Y
-            for (class Fisherman *p : fishermen)
+            for (ci = fishermen.cbegin(); ci != fishermen.cend(); ++ci)
             {
+                p = (*ci);
+                //(*ci)->getXY(x, y);
                 p->getXY(x, y);
                 if (cur_x == x && cur_y == y)
                 {
                     cout << p->getTypeName();
-                }
-                else
-                {
-                    cout << "-";
+                    break;
                 }
             }
+
+            if (ci == fishermen.cend())
+                cout << "-";
         }
 
         cout << " |" << endl;
@@ -168,8 +172,8 @@ void Location::showMap() const
     cout << " + ";
     for (n = 0; n < (int)getMaxMapSize(); n++)
     {
-        str = format("%3d", n);
-        cout << str;
+        //str = format("%3d", n);
+        cout << "---";
     };
     cout << " +" << endl;
 }
@@ -203,14 +207,14 @@ bool Location::joinFisherman(class Fisherman *p)
 
     if (isSpotEmpty(x, y))
     {
-        cout << "You can't join another fisherman to this spot. Change coordinates for him first" << endl;
-    }
-    else
-    {
         fishermen.push_back(p);
         p->setLocation(this);
         cout << "Fisherman has been added successfully" << endl;
         return true;
+    }
+    else
+    {
+        cout << "You can't join another fisherman to this spot. Change coordinates for him first" << endl;
     }
 
     return false;                             

@@ -32,18 +32,18 @@ std::list<class Fisherman*> list_fishermen;
 
 class Location *searchLocationByName(const string & name)
 {
-    class Location *cur_Location = nullptr;
+    class Location *cur_location = nullptr;
 
     for (class Location *w : list_Locations)
     {
         if (w->getName() == name)
         {
-            cur_Location = w;
+            cur_location = w;
             break;      
         }
     }                            
 
-    return cur_Location;
+    return cur_location;
 }
 
 class Fisherman *searchFishermanByNick(const string &nick)
@@ -229,22 +229,22 @@ int main()
                         case CW_MenuLocationDelete_E:
                         {   
                             string name;
-                            class Location *cur_Location;
+                            class Location *cur_location;
 
                             cout << "Menu->Location->Delete: input Location name" << endl;
                             cin >> name;
 
                             // Check that Location with this name exsist
-                            cur_Location = searchLocationByName(name);   
-                            if (cur_Location == nullptr)
+                            cur_location = searchLocationByName(name);   
+                            if (cur_location == nullptr)
                             {
                                 cout << "Can`t delete Location with this name" << endl;
                                 break;
                             }
 
                             // Deleting Location
-                            list_Locations.remove(cur_Location);
-                            delete cur_Location;
+                            list_Locations.remove(cur_location);
+                            delete cur_location;
 
                         } break;
 
@@ -296,9 +296,10 @@ int main()
                             }
 
                             // Check that Fisherman with this nick exsist
-                            if (cur_fisherman->getLocation() != nullptr)
+                            cur_location = cur_fisherman->getLocation();
+                            if (cur_location != nullptr)
                             {
-                                cout << "Fisherman with this nick already exist in another location: " << cur_fisherman << endl;
+                                cout << "Fisherman with this nick already exist in another location: " << cur_location->getName() << endl;
                                 break;
                             }
 
@@ -353,34 +354,34 @@ int main()
                         case CW_MenuLocationShowMap_E:
                         {
                             string name;
-                            class Location *cur_Location;
+                            class Location *cur_location;
 
                             cout << "Menu->Location->ShowMap: input Location name" << endl;
                             cin >> name;
 
                             // Check that Location with this name exsist
-                            cur_Location = searchLocationByName(name);
-                            if (cur_Location == nullptr)
+                            cur_location = searchLocationByName(name);
+                            if (cur_location == nullptr)
                             {
                                 cout << "Location with this name doesn`t exist" << endl;
                                 break;
                             }
 
-                            cur_Location->showMap();
+                            cur_location->showMap();
                         } break;
 
                         case CW_MenuLocationPlayRound_E:
                         {
-                            string name;
-                            class Location *cur_Location;
                             int index;
+                            string name;
+                            class Location *cur_location;
 
                             cout << "Menu->Location->PlayRound: input Location name" << endl;
                             cin >> name;
 
                             // Check that Location with this name exsist
-                            cur_Location = searchLocationByName(name);
-                            if (cur_Location == nullptr)
+                            cur_location = searchLocationByName(name);
+                            if (cur_location == nullptr)
                             {
                                 cout << "Location with this name doesn`t exist" << endl;
                                 break;
@@ -388,7 +389,7 @@ int main()
 
                             for (index = 0; index < 43; index++)
                             {
-                                cur_Location->playRound();
+                                cur_location->playRound();
                             }
                         } break;
                     }
@@ -515,7 +516,7 @@ int main()
                 case CN_MenuLoad_E:
                 {
                     std::ifstream file;
-                    class Location * cur_Location;
+                    class Location * cur_location;
                     class Fisherman *cur_fisherman;
 
                     // Check old objects Locations and fishermen
@@ -526,10 +527,10 @@ int main()
                         {
                             // Deletes all Locations and fishermen
                             
-                            for (class Location *cur_Location : list_Locations)
+                            for (class Location *cur_location : list_Locations)
                             {
                                 // Deleting Location
-                                delete cur_Location;
+                                delete cur_location;
                             }
                             list_Locations.clear();
 
@@ -556,9 +557,9 @@ int main()
                         // 2 - Loading every Location's instnce from the file
                         for (; size > 0; size--)
                         {
-                            cur_Location = new Location();
-                            cur_Location->load(file);
-                            list_Locations.push_back(cur_Location);
+                            cur_location = new Location();
+                            cur_location->load(file);
+                            list_Locations.push_back(cur_location);
                         }
 
                         // 3 - Loading amount of fishermen in the list
